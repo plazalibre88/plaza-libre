@@ -1,0 +1,19 @@
+{
+  "name": "Plaza Libre",
+  "short_name": "Plaza Libre",
+  "description": "Compra y venta directa en Venezuela",
+  "start_url": "/plaza-libre/",
+  "scope": "/plaza-libre/",
+  "display": "standalone",
+  "background_color": "#1E40AF",
+  "theme_color": "#1E40AF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-512.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
