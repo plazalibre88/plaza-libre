@@ -1489,10 +1489,10 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBwTAHim-khOo5yQT3wW6RULY_RD1dQxVQ",
+    apiKey: "AIzaSyBWiAHim-kh0o5yQT3W6RULY_BD1dqXVQ",
     authDomain: "plaza-libre-c8e29.firebaseapp.com",
     projectId: "plaza-libre-c8e29",
     storageBucket: "plaza-libre-c8e29.firebasestorage.app",
@@ -1503,14 +1503,42 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  window.dbPlazaLibre = db;
+  window.addDocPlazaLibre = addDoc;
+  window.collectionPlazaLibre = collection;
 
   async function cargarProductosFirestore() {
-    const querySnapshot = await getDocs(collection(db, "productos"));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, "=>", doc.data());
-    });
+    try {
+      const querySnapshot = await getDocs(collection(db, "productos"));
+      const productosNube = [];
+      querySnapshot.forEach((doc) => {
+        const d = doc.data();
+        productosNube.push({
+          id: doc.id,
+          title: d.title || d.titulo || "Sin título",
+          priceUsd: Number(d.priceUsd ?? d.precio ?? 0),
+          category: d.category || d.categoria || "Todo",
+          condition: d.condition || d.condicion || "Nuevo",
+          location: d.location || d.ciudad || "Puerto Ordaz",
+          description: d.description || d.descripcion || "",
+          phone: d.phone || d.telefono || "",
+          image: d.image || d.imagen || "",
+          featured: Boolean(d.featured),
+          paused: Boolean(d.paused),
+          createdAt: d.createdAt || Date.now()
+        });
+      });
+
+      if (productosNube.length > 0 && typeof state !== "undefined") {
+        state.listings = productosNube;
+        if (typeof renderListings === "function") renderListings();
+      }
+    } catch (error) {
+      console.error("Error cargando productos:", error);
+    }
   }
 
   cargarProductosFirestore();
-</script>                                                                                                                            </body>
+</script>
+</body>
 </html>
