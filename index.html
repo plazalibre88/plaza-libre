@@ -3,11 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plaza Libre Venezuela — Compra y Venta</title>
+  <title>Plaza Libre Venezuela | Compra y Venta en Venezuela</title>
+  <meta name="description" content="Publica gratis, compra y vende vehículos, motos, repuestos, teléfonos, electrónica, inmuebles y servicios directo por WhatsApp en toda Venezuela." />
+  <meta name="keywords" content="compra y venta venezuela, clasificados venezuela, plaza libre venezuela, marketplace venezuela, puerto ordaz, ciudad guayana, caracas, valencia, maracaibo, repuestos, vehiculos" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#1E40AF" />
+  <link rel="canonical" href="https://plazalibre88.github.io/plaza-libre/" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="logo.png" />
-  <meta property="og:title" content="Plaza Libre Venezuela — Compra y Venta" />
-  <meta property="og:description" content="Compra y vende rápido en toda Venezuela. Vehículos, motos, tecnología, hogar, inmuebles y servicios." />
-  <meta property="og:image" content="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+
+  <!-- Vista previa al compartir por WhatsApp y redes -->
+  <meta property="og:title" content="Plaza Libre Venezuela — Compra y Venta Segura" />
+  <meta property="og:description" content="Compra y vende rápido en toda Venezuela. Vehículos, motos, tecnología, hogar, inmuebles y servicios directo por WhatsApp." />
+  <meta property="og:url" content="https://plazalibre88.github.io/plaza-libre/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://plazalibre88.github.io/plaza-libre/logo.png" />
+
+  <!-- PEGA AQUÍ LA ETIQUETA HTML DE GOOGLE SEARCH CONSOLE CUANDO LA VERIFIQUES -->
+  <!-- <meta name="google-site-verification" content="TU_CODIGO_DE_GOOGLE_AQUI" /> -->
+
   <style>
     :root {
       --bg: #F8FAFC;
@@ -39,6 +54,13 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      padding-bottom: 68px;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding-bottom: 0;
+      }
     }
 
     /* Header */
@@ -493,6 +515,18 @@
       border-radius: 5px;
     }
 
+    .time-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(15, 23, 42, 0.68);
+      color: #F8FAFC;
+      font-size: 0.66rem;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+
     .fav-btn {
       position: absolute;
       top: 8px;
@@ -571,6 +605,14 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .rating-pill {
+      color: #B45309;
+      font-weight: 700;
+      font-size: 0.7rem;
+      margin-left: auto;
       flex-shrink: 0;
     }
 
@@ -741,7 +783,7 @@
       object-fit: cover;
     }
 
-    /* Detalle galería y extras */
+    /* Detalle galería, seguridad y extras */
     .detail-gallery {
       margin-bottom: 12px;
     }
@@ -773,6 +815,30 @@
 
     .thumb-strip img.active {
       border-color: var(--primary);
+    }
+
+    .seller-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .safety-box {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 0.78rem;
+      margin-bottom: 14px;
+      line-height: 1.4;
     }
 
     .quick-wa-row {
@@ -908,6 +974,63 @@
       flex-wrap: wrap;
     }
 
+    /* Barra inferior móvil estilo Mercado Libre */
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      z-index: 45;
+      box-shadow: 0 -2px 10px rgba(15, 23, 42, 0.06);
+    }
+
+    @media (min-width: 768px) {
+      .mobile-nav {
+        display: none;
+      }
+    }
+
+    .mnav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      height: 100%;
+    }
+
+    .mnav-btn span.ico {
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .mnav-btn.pub-center {
+      color: #0F172A;
+    }
+
+    .mnav-btn.pub-center span.ico {
+      background: var(--accent);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      box-shadow: 0 3px 8px rgba(245, 158, 11, 0.45);
+    }
+
     /* Footer */
     footer {
       background: var(--surface);
@@ -934,7 +1057,7 @@
 
     .toast {
       position: fixed;
-      bottom: 20px;
+      bottom: 72px;
       left: 50%;
       transform: translateX(-50%);
       background: #0F172A;
@@ -948,6 +1071,12 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
       text-align: center;
       max-width: 92vw;
+    }
+
+    @media (min-width: 768px) {
+      .toast {
+        bottom: 20px;
+      }
     }
 
     .toast.show {
@@ -1042,10 +1171,37 @@
     </div>
   </main>
 
+  <!-- Barra de navegación inferior fija en móviles -->
+  <nav class="mobile-nav" aria-label="Navegación móvil">
+    <button class="mnav-btn" onclick="resetHome()">
+      <span class="ico">🏠</span>
+      <span>Inicio</span>
+    </button>
+    <button class="mnav-btn" onclick="focusSearchMobile()">
+      <span class="ico">🔍</span>
+      <span>Buscar</span>
+    </button>
+    <button class="mnav-btn pub-center" onclick="openPublishModal()">
+      <span class="ico">+</span>
+      <span>Publicar</span>
+    </button>
+    <button class="mnav-btn" onclick="toggleFavFilter()">
+      <span class="ico">♥</span>
+      <span>Favoritos</span>
+    </button>
+    <button class="mnav-btn" onclick="openMyAdsModal()">
+      <span class="ico">📋</span>
+      <span>Mis Ads</span>
+    </button>
+  </nav>
+
   <footer>
     <div class="footer-inner">
       <div>Compra y venta directa entre personas y negocios en Venezuela.</div>
-      <div class="secret-trigger" onclick="handleSecretClick()">© 2026 Plaza Libre Venezuela</div>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <a id="apkDownloadLink" href="#" onclick="handleApkDownload(event)" class="btn btn-outline" style="padding:5px 10px; font-size:0.78rem;">📲 App Android</a>
+        <div class="secret-trigger" onclick="handleSecretClick()">© 2026 Plaza Libre Venezuela</div>
+      </div>
     </div>
   </footer>
 <!-- FIN PARTE 1 -->
@@ -1205,8 +1361,8 @@
 
       <div class="admin-tabs">
         <button class="btn btn-primary" id="tabPubs" onclick="switchAdminTab('pubs')">Publicaciones</button>
-        <button class="btn btn-outline" id="tabReports" onclick="switchAdminTab('reports')">Reportes</button>
-        <button class="btn btn-outline" id="tabSettings" onclick="switchAdminTab('settings')">Banner, Tasa y Firebase</button>
+        <button class="btn btn-outline" id="tabReports" onclick="switchAdminTab('reports')">Reportes (<span id="adminReportsCount">0</span>)</button>
+        <button class="btn btn-outline" id="tabSettings" onclick="switchAdminTab('settings')">Banner, APK, Tasa y Firebase</button>
       </div>
 
       <div id="adminBody"></div>
@@ -1282,7 +1438,8 @@
       title: "Publica gratis y vende directo por WhatsApp en toda Venezuela",
       sub: "¿Tienes un negocio o quieres destacar tu anuncio arriba? Contáctanos.",
       btnText: "Publicar ahora",
-      btnUrl: ""
+      btnUrl: "",
+      apkUrl: ""
     };
 
     let state = {
@@ -1331,10 +1488,16 @@
 
     function saveReports() {
       localStorage.setItem(STORAGE_KEYS.REPORTS, JSON.stringify(state.reports));
+      updateAdminReportsCount();
     }
 
     function updateFavCount() {
       document.getElementById("favCount").textContent = state.favorites.length;
+    }
+
+    function updateAdminReportsCount() {
+      const el = document.getElementById("adminReportsCount");
+      if (el) el.textContent = state.reports.length;
     }
 
     function updateRateBadge() {
@@ -1361,12 +1524,52 @@
       }
     }
 
+    function handleApkDownload(e) {
+      e.preventDefault();
+      if (state.banner.apkUrl && state.banner.apkUrl.trim()) {
+        window.open(state.banner.apkUrl.trim(), "_blank", "noopener");
+      } else {
+        showToast("En iPhone o Android: toca el menú del navegador y elige 'Agregar a pantalla de inicio'");
+      }
+    }
+
+    function focusSearchMobile() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => document.getElementById("searchInput").focus(), 200);
+    }
+
     function showToast(msg) {
       const el = document.getElementById("toast");
       el.textContent = msg;
       el.classList.add("show");
       clearTimeout(window._toastTimer);
       window._toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
+    }
+
+    function timeAgo(ts) {
+      const diff = Math.max(0, Date.now() - Number(ts || Date.now()));
+      const mins = Math.floor(diff / 60000);
+      if (mins < 2) return "Ahora";
+      if (mins < 60) return `Hace ${mins} min`;
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return `Hace ${hrs} h`;
+      const days = Math.floor(hrs / 24);
+      if (days === 1) return "Ayer";
+      if (days < 30) return `Hace ${days} días`;
+      return "Hace +1 mes";
+    }
+
+    function getSellerStats(item) {
+      const key = (item.phone || item.seller || "").trim().toLowerCase();
+      const sellerAds = state.listings.filter(
+        (x) => !x.paused && ((x.phone || x.seller || "").trim().toLowerCase() === key)
+      );
+      const totalAds = sellerAds.length || 1;
+      const soldCount = sellerAds.filter((x) => x.sold).length;
+      const rating = item.verified
+        ? Math.min(5.0, 4.8 + Math.min(0.2, soldCount * 0.05)).toFixed(1)
+        : Math.min(4.9, 4.5 + Math.min(0.4, totalAds * 0.08)).toFixed(1);
+      return { totalAds, soldCount, rating };
     }
 
     function formatPrice(usd) {
@@ -1533,6 +1736,7 @@
       items.forEach((item) => {
         const p = formatPrice(item.priceUsd);
         const isFav = state.favorites.includes(item.id);
+        const stats = getSellerStats(item);
         const fallbackImg = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=70";
         const imgs = Array.isArray(item.images) && item.images.length ? item.images : [item.image || fallbackImg];
 
@@ -1543,6 +1747,7 @@
             <img src="${imgs[0] || fallbackImg}" alt="${escapeHtml(item.title)}" onerror="this.src='${fallbackImg}'" />
             ${item.featured ? '<span class="badge-featured">DESTACADO</span>' : ""}
             ${item.sold ? '<div class="badge-sold">VENDIDO</div>' : ""}
+            <span class="time-badge">${timeAgo(item.createdAt)}</span>
             ${imgs.length > 1 ? `<span class="photo-count-badge">📷 ${imgs.length}</span>` : ""}
             <button class="fav-btn ${isFav ? "active" : ""}" title="Favorito" onclick="event.stopPropagation(); toggleFav('${item.id}')">
               ${isFav ? "♥" : "♡"}
@@ -1555,6 +1760,7 @@
             <div class="seller-mini">
               <span>${escapeHtml(item.seller || "Particular")}</span>
               ${item.verified ? '<span class="verified-tick" title="Vendedor Verificado">✓</span>' : ""}
+              <span class="rating-pill">★ ${stats.rating}</span>
             </div>
             <div class="meta">
               <span class="meta-loc">📍 ${escapeHtml(item.location || "")}</span>
@@ -1617,6 +1823,7 @@
       state.onlyFavs = false;
       state.sellerFilter = "";
       document.getElementById("favFilterBtn").classList.remove("active");
+      updateUrlParams(null);
       renderCategories();
       renderListings();
     }
@@ -1624,6 +1831,45 @@
     function resetHome() {
       clearFilters();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateUrlParams(itemId) {
+      try {
+        const url = new URL(window.location.href);
+        if (itemId) {
+          url.searchParams.set("item", itemId);
+        } else {
+          url.searchParams.delete("item");
+          url.searchParams.delete("cat");
+          url.searchParams.delete("ciudad");
+        }
+        window.history.replaceState({}, "", url.toString());
+      } catch {}
+    }
+
+    function applyInitialUrlParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const cat = params.get("cat");
+        const ciudad = params.get("ciudad");
+        const itemId = params.get("item");
+
+        if (cat) {
+          const foundCat = CATEGORIES.find((c) => normalizarTexto(c) === normalizarTexto(cat));
+          if (foundCat) {
+            state.category = foundCat;
+            renderCategories();
+          }
+        }
+        if (ciudad) {
+          document.getElementById("locationFilter").value = ciudad;
+        }
+        renderListings();
+        if (itemId) {
+          const exists = state.listings.find((x) => x.id === itemId && !x.paused);
+          if (exists) openDetail(itemId);
+        }
+      } catch {}
     }
 
     function openPublishModal() {
@@ -1636,6 +1882,9 @@
 
     function closeModal(id) {
       document.getElementById(id).classList.remove("open");
+      if (id === "detailModal") {
+        updateUrlParams(null);
+      }
     }
 
     function compressSingleImage(file) {
@@ -1788,6 +2037,8 @@
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
 
+      updateUrlParams(id);
+
       item.views = (Number(item.views) || 0) + 1;
       saveListings();
       if (typeof window.actualizarProductoFirestore === "function") {
@@ -1795,6 +2046,7 @@
       }
 
       const p = formatPrice(item.priceUsd);
+      const stats = getSellerStats(item);
       const cleanPhone = (item.phone || "").replace(/\D/g, "");
       const waPhone = cleanPhone.startsWith("0") && cleanPhone.length === 11 ? "58" + cleanPhone.slice(1) : cleanPhone;
       const imgs = Array.isArray(item.images) && item.images.length ? item.images : [item.image];
@@ -1885,18 +2137,30 @@
           </div>
           <div style="text-align:right;">
             <span class="condition-tag">${escapeHtml(item.condition)} · ${escapeHtml(item.category)}</span>
-            <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;">👁 ${item.views} vistas</div>
+            <div style="font-size:0.75rem; color:var(--muted); margin-top:4px;">🕒 ${timeAgo(item.createdAt)} · 👁 ${item.views} vistas</div>
           </div>
         </div>
 
         <div class="info-pills">${deliveryPills}${paymentPills}</div>
 
         <p style="margin-bottom:12px; color:#334155; white-space:pre-line;">${escapeHtml(item.desc)}</p>
-        <div style="font-size:0.86rem; color:var(--muted); margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+
+        <div class="seller-box">
           <div>
-            <strong>Vendedor:</strong> ${escapeHtml(item.seller || "Particular")} ${item.verified ? '<span class="verified-tick">✓</span>' : ""} · <strong>Ubicación:</strong> ${escapeHtml(item.location)}
+            <div style="font-size:0.9rem; font-weight:700; display:flex; align-items:center; gap:5px;">
+              <span>${escapeHtml(item.seller || "Particular")}</span>
+              ${item.verified ? '<span class="verified-tick" title="Vendedor Verificado">✓</span>' : ""}
+              <span style="color:#B45309; font-size:0.8rem;">★ ${stats.rating}</span>
+            </div>
+            <div style="font-size:0.78rem; color:var(--muted);">
+              📍 ${escapeHtml(item.location)} · ${stats.totalAds} ${stats.totalAds === 1 ? "publicación" : "publicaciones"}${stats.soldCount > 0 ? ` · ${stats.soldCount} vendidas` : ""}
+            </div>
           </div>
-          <button class="btn btn-outline" style="padding:4px 9px; font-size:0.78rem;" onclick="filterBySeller('${escapeHtml(sellerKey)}')">Ver más del vendedor</button>
+          <button class="btn btn-outline" style="padding:5px 10px; font-size:0.78rem;" onclick="filterBySeller('${escapeHtml(sellerKey)}')">Ver perfil</button>
+        </div>
+
+        <div class="safety-box">
+          🛡️ <strong>Compra segura:</strong> Revisa bien el artículo antes de pagar, acuerda entregas personales en lugares públicos y evita enviar adelantos a cuentas de terceros.
         </div>
 
         ${
@@ -1915,7 +2179,7 @@
               ? `<a class="btn btn-success" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu publicación en Plaza Libre Venezuela: " + item.title + " ($" + item.priceUsd + ")")}">Contactar por WhatsApp</a>`
               : ""
           }
-          <button class="btn btn-outline" onclick="shareItem('${item.id}')">Compartir</button>
+          <button class="btn btn-outline" onclick="shareItem('${item.id}')">Compartir enlace directo</button>
           <button class="btn btn-outline" onclick="manageSingleAdWithPin('${item.id}')">Gestionar (PIN)</button>
           <button class="btn btn-outline" onclick="reportItem('${item.id}')">Reportar</button>
         </div>
@@ -1946,12 +2210,18 @@
       el.classList.add("active");
     }
 
+    function getDirectItemUrl(id) {
+      const base = window.location.origin + window.location.pathname;
+      return `${base}?item=${encodeURIComponent(id)}`;
+    }
+
     function shareItem(id) {
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
-      const shareText = `Mira esto en Plaza Libre Venezuela: ${item.title} — $${Number(item.priceUsd).toFixed(2)} (${item.location}) ${window.location.href}`;
+      const directUrl = getDirectItemUrl(id);
+      const shareText = `Mira esto en Plaza Libre Venezuela: ${item.title} — $${Number(item.priceUsd).toFixed(2)} (${item.location}) ${directUrl}`;
       if (navigator.share) {
-        navigator.share({ title: item.title, text: shareText, url: window.location.href }).catch(() => {});
+        navigator.share({ title: item.title, text: shareText, url: directUrl }).catch(() => {});
       } else {
         window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank", "noopener");
       }
@@ -2119,17 +2389,24 @@
       openDetail(id);
     }
 
-    function reportItem(id) {
-      const reason = prompt("Motivo del reporte:");
+    async function reportItem(id) {
+      const item = state.listings.find((x) => x.id === id);
+      const reason = prompt("Motivo del reporte (ej. precio falso, estafa, producto prohibido):");
       if (!reason || !reason.trim()) return;
-      state.reports.push({
+      const rep = {
         id: "rep-" + Date.now(),
         listingId: id,
+        listingTitle: item ? item.title : id,
         reason: reason.trim(),
         at: new Date().toLocaleString()
-      });
+      };
+      if (typeof window.guardarReporteFirestore === "function") {
+        const nubeRepId = await window.guardarReporteFirestore(rep);
+        if (nubeRepId) rep.id = nubeRepId;
+      }
+      state.reports.unshift(rep);
       saveReports();
-      showToast("Reporte registrado");
+      showToast("Reporte enviado a revisión");
     }
 
     /* Acceso privado sin pistas */
@@ -2165,6 +2442,7 @@
 
     function openAdminModal() {
       state.adminTab = "pubs";
+      updateAdminReportsCount();
       document.getElementById("adminModal").classList.add("open");
       renderAdminBody();
     }
@@ -2220,11 +2498,14 @@
             (r) => `
           <div class="admin-item">
             <div>
-              <strong>ID: ${escapeHtml(r.listingId)}</strong>
+              <strong>${escapeHtml(r.listingTitle || r.listingId)}</strong>
               <div style="font-size:0.85rem;">Motivo: ${escapeHtml(r.reason)}</div>
-              <div style="font-size:0.78rem; color:var(--muted);">${escapeHtml(r.at)}</div>
+              <div style="font-size:0.78rem; color:var(--muted);">${escapeHtml(r.at)} · ID: ${escapeHtml(r.listingId)}</div>
             </div>
-            <button class="btn btn-outline" onclick="dismissReport('${r.id}')">Resolver</button>
+            <div class="admin-actions">
+              <button class="btn btn-outline" onclick="openDetail('${escapeHtml(r.listingId)}')">Ver anuncio</button>
+              <button class="btn btn-outline" onclick="dismissReport('${r.id}')">Resolver</button>
+            </div>
           </div>`
           )
           .join("");
@@ -2250,6 +2531,10 @@
             </div>
           </div>
           <div class="field">
+            <label>Enlace directo de descarga de tu APK (Google Drive o GitHub)</label>
+            <input id="adminApkUrl" type="text" value="${escapeHtml(state.banner.apkUrl || "")}" placeholder="Ej. https://drive.google.com/file/d/..." />
+          </div>
+          <div class="field">
             <label>Tasa de cambio manual de respaldo (Bs por $1 USD)</label>
             <input id="rateInput" type="number" step="0.01" min="0.01" value="${state.rate}" />
           </div>
@@ -2257,7 +2542,7 @@
             <label>Configuración Firebase (JSON)</label>
             <textarea id="firebaseCfgInput" placeholder='{"apiKey":"...","projectId":"..."}'>${escapeHtml(savedCfg)}</textarea>
           </div>
-          <button class="btn btn-primary" onclick="saveAdminSettings()">Guardar configuración</button>
+          <button class="btn btn-primary" onclick="saveAdminSettings()">Guardar configuración en la nube</button>
         `;
       }
     }
@@ -2312,21 +2597,30 @@
       showToast("Publicación eliminada");
     }
 
-    function dismissReport(id) {
+    async function dismissReport(id) {
       state.reports = state.reports.filter((r) => r.id !== id);
       saveReports();
       renderAdminBody();
+      if (typeof window.eliminarReporteFirestore === "function") {
+        await window.eliminarReporteFirestore(id);
+      }
+      showToast("Reporte resuelto");
     }
 
-    function saveAdminSettings() {
+    async function saveAdminSettings() {
       state.banner = {
         title: document.getElementById("adminBannerTitle").value.trim() || DEFAULT_BANNER.title,
         sub: document.getElementById("adminBannerSub").value.trim() || DEFAULT_BANNER.sub,
         btnText: document.getElementById("adminBannerBtnText").value.trim() || DEFAULT_BANNER.btnText,
-        btnUrl: document.getElementById("adminBannerBtnUrl").value.trim()
+        btnUrl: document.getElementById("adminBannerBtnUrl").value.trim(),
+        apkUrl: document.getElementById("adminApkUrl").value.trim()
       };
       localStorage.setItem(STORAGE_KEYS.BANNER, JSON.stringify(state.banner));
       renderBanner();
+
+      if (typeof window.guardarBannerFirestore === "function") {
+        await window.guardarBannerFirestore(state.banner);
+      }
 
       const r = parseFloat(document.getElementById("rateInput").value);
       if (!isNaN(r) && r > 0) {
@@ -2337,12 +2631,13 @@
       const cfgText = document.getElementById("firebaseCfgInput").value.trim();
       localStorage.setItem(STORAGE_KEYS.FIREBASE_CFG, cfgText);
       renderListings();
-      showToast("Configuración guardada");
+      showToast("Configuración guardada en la nube");
     }
 
     // Init
     renderBanner();
     updateFavCount();
+    updateAdminReportsCount();
     renderCategories();
     renderListings();
   </script>
@@ -2355,6 +2650,8 @@
       getDocs,
       addDoc,
       doc,
+      setDoc,
+      getDoc,
       updateDoc,
       deleteDoc
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -2421,6 +2718,61 @@
       }
     };
 
+    window.guardarReporteFirestore = async function(rep) {
+      try {
+        const docRef = await addDoc(collection(db, "reportes"), rep);
+        return docRef.id;
+      } catch (error) {
+        console.warn("No se pudo guardar reporte en la nube:", error);
+        return null;
+      }
+    };
+
+    window.eliminarReporteFirestore = async function(id) {
+      try {
+        await deleteDoc(doc(db, "reportes", id));
+      } catch (error) {
+        console.warn("No se pudo eliminar reporte en la nube:", error);
+      }
+    };
+
+    window.guardarBannerFirestore = async function(bannerObj) {
+      try {
+        await setDoc(doc(db, "configuracion", "banner"), bannerObj);
+      } catch (error) {
+        console.warn("No se pudo guardar banner en la nube:", error);
+      }
+    };
+
+    async function cargarConfiguracionNube() {
+      try {
+        const snap = await getDoc(doc(db, "configuracion", "banner"));
+        if (snap.exists() && typeof state !== "undefined") {
+          state.banner = { ...DEFAULT_BANNER, ...snap.data() };
+          localStorage.setItem(STORAGE_KEYS.BANNER, JSON.stringify(state.banner));
+          renderBanner();
+        }
+      } catch (e) {
+        console.warn("Usando banner local:", e);
+      }
+    }
+
+    async function cargarReportesNube() {
+      try {
+        const snap = await getDocs(collection(db, "reportes"));
+        const reps = [];
+        snap.forEach((dSnap) => {
+          reps.push({ ...dSnap.data(), id: dSnap.id });
+        });
+        if (typeof state !== "undefined") {
+          state.reports = reps;
+          saveReports();
+        }
+      } catch (e) {
+        console.warn("Usando reportes locales:", e);
+      }
+    }
+
     async function actualizarTasaBcvEnVivo() {
       try {
         const resp = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
@@ -2481,7 +2833,10 @@
     }
 
     await actualizarTasaBcvEnVivo();
+    await cargarConfiguracionNube();
     await cargarProductosFirestore();
+    await cargarReportesNube();
+    applyInitialUrlParams();
   </script>
 </body>
 </html>
