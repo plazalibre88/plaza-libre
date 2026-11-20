@@ -139,6 +139,11 @@
       transform: scale(0.98);
     }
 
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .btn-publish {
       background: var(--accent);
       color: #0F172A;
@@ -199,6 +204,17 @@
     .currency-select option {
       color: var(--text);
       background: #fff;
+    }
+
+    .rate-pill {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 9px;
+      padding: 7px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     /* Categories & Filters */
@@ -587,6 +603,11 @@
       gap: 10px;
     }
 
+    .admin-item.pending-review {
+      border-color: var(--accent);
+      background: #FFFBEB;
+    }
+
     .admin-actions {
       display: flex;
       gap: 6px;
@@ -631,6 +652,8 @@
       z-index: 90;
       display: none;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      max-width: 92vw;
     }
 
     .toast.show {
@@ -653,6 +676,7 @@
       </form>
 
       <div class="header-actions">
+        <span id="rateBadge" class="rate-pill" title="Tasa de cambio activa">BCV: Bs 45,00</span>
         <select id="currencySelect" class="currency-select" onchange="changeCurrency()">
           <option value="USD">$ USD</option>
           <option value="VES">Bs</option>
@@ -713,7 +737,7 @@
       <form onsubmit="submitListing(event)">
         <div class="field">
           <label>Título de la publicación *</label>
-          <input id="pubTitle" type="text" required placeholder="Ej. Moto Bera SBR 150 operativa o Laptop i5" />
+          <input id="pubTitle" type="text" maxlength="90" required placeholder="Ej. Moto Bera SBR 150 operativa o Laptop i5" />
         </div>
 
         <div class="form-grid">
@@ -733,22 +757,22 @@
         <div class="form-grid">
           <div class="field">
             <label>Precio en USD ($) *</label>
-            <input id="pubPrice" type="number" min="0" step="0.01" required placeholder="Ej. 120" />
+            <input id="pubPrice" type="number" min="0.01" step="0.01" required placeholder="Ej. 120" />
           </div>
           <div class="field">
             <label>Ubicación (Ciudad / Sector) *</label>
-            <input id="pubLocation" type="text" required placeholder="Ej. Puerto Ordaz, Alta Vista" />
+            <input id="pubLocation" type="text" maxlength="60" required placeholder="Ej. Puerto Ordaz, Alta Vista" />
           </div>
         </div>
 
         <div class="form-grid">
           <div class="field">
             <label>Nombre del vendedor *</label>
-            <input id="pubSeller" type="text" required placeholder="Tu nombre o tienda" />
+            <input id="pubSeller" type="text" maxlength="50" required placeholder="Tu nombre o tienda" />
           </div>
           <div class="field">
             <label>Teléfono / WhatsApp (opcional)</label>
-            <input id="pubPhone" type="text" placeholder="Ej. 04141234567" />
+            <input id="pubPhone" type="text" maxlength="20" placeholder="Ej. 04141234567" />
           </div>
         </div>
 
@@ -762,12 +786,16 @@
 
         <div class="field">
           <label>Descripción *</label>
-          <textarea id="pubDesc" required placeholder="Detalla estado, características, entrega o negociación..."></textarea>
+          <textarea id="pubDesc" maxlength="800" required placeholder="Detalla estado, características, entrega o negociación..."></textarea>
+        </div>
+
+        <div style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;">
+          Al publicar aceptas las normas de Plaza Libre. Los anuncios con contenido prohibido o sospechoso pasan automáticamente a revisión.
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px;">
           <button type="button" class="btn btn-outline" onclick="closeModal('publishModal')">Cancelar</button>
-          <button type="submit" class="btn btn-publish">Publicar ahora</button>
+          <button type="submit" id="pubSubmitBtn" class="btn btn-publish">Publicar ahora</button>
         </div>
       </form>
     </div>
@@ -837,6 +865,14 @@
 
     const ADMIN_SECRET = "23456";
 
+    const PALABRAS_PROHIBIDAS = [
+      "arma", "armas", "pistola", "revolver", "escopeta", "rifle", "municion", "bala", "balas",
+      "droga", "drogas", "cocaina", "marihuana", "cripy", "tusi", "extasis",
+      "xxx", "porno", "pornografia", "escort", "prepago", "prostitucion", "sexual",
+      "casino", "apuesta", "apuestas", "bingo", "estafa", "lavado", "sicario",
+      "documento falso", "cedula falsa", "pasaporte falso", "licencia falsa", "medicamento controlado"
+    ];
+
     const DEFAULT_LISTINGS = [
       {
         id: "item-1",
@@ -849,63 +885,13 @@
         phone: "04148889900",
         featured: true,
         paused: false,
+        reviewReason: "",
         createdAt: Date.now() - 3600000 * 5,
         image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=70",
         desc: "Equipo en excelente estado de funcionamiento, batería rinde bien, cargador incluido. Ideal para trabajo y oficina.",
         questions: [
           { ask: "¿Le dura bien la batería?", answer: "Sí, alrededor de 3 horas en uso normal.", at: "Hoy" }
         ],
-        chats: []
-      },
-      {
-        id: "item-2",
-        title: "Kit de Herramientas Mecánicas 108 Piezas Acero Cromo Vanadio",
-        category: "Motos y Repuestos",
-        condition: "Nuevo",
-        priceUsd: 65,
-        location: "San Félix",
-        seller: "Taller El Progreso",
-        phone: "04249001122",
-        featured: true,
-        paused: false,
-        createdAt: Date.now() - 3600000 * 12,
-        image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=800&q=70",
-        desc: "Estuche completo nuevo de paquete con dados, rachets y extensiones para autos y motos.",
-        questions: [],
-        chats: []
-      },
-      {
-        id: "item-3",
-        title: "Juego de Comedor de Madera 6 Puestos",
-        category: "Hogar",
-        condition: "Usado",
-        priceUsd: 180,
-        location: "Ciudad Bolívar",
-        seller: "Mariela Rivas",
-        phone: "04125554433",
-        featured: false,
-        paused: false,
-        createdAt: Date.now() - 3600000 * 24,
-        image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=800&q=70",
-        desc: "Mesa firme y 6 sillas tapizadas en buen estado. Entrega acordada en la ciudad.",
-        questions: [],
-        chats: []
-      },
-      {
-        id: "item-4",
-        title: "Servicio Técnico de Redes, Cámaras y Soporte PC",
-        category: "Servicios",
-        condition: "Nuevo",
-        priceUsd: 25,
-        location: "Caroní",
-        seller: "Soporte Digital",
-        phone: "04167772211",
-        featured: false,
-        paused: false,
-        createdAt: Date.now() - 3600000 * 30,
-        image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=70",
-        desc: "Configuración de routers, redes locales, cámaras de seguridad, mantenimiento y diagnóstico de equipos.",
-        questions: [],
         chats: []
       }
     ];
@@ -915,19 +901,20 @@
       favorites: JSON.parse(localStorage.getItem(STORAGE_KEYS.FAVS) || "[]"),
       reports: JSON.parse(localStorage.getItem(STORAGE_KEYS.REPORTS) || "[]"),
       rate: parseFloat(localStorage.getItem(STORAGE_KEYS.RATE) || "45"),
+      rateSource: "Manual",
       currency: "USD",
       category: "Todo",
       onlyFavs: false,
       uploadedPhotoData: "",
       secretClicks: 0,
       adminUnlocked: false,
-      adminTab: "pubs"
+      adminTab: "pubs",
+      isPublishing: false
     };
 
     function loadListings() {
       const raw = localStorage.getItem(STORAGE_KEYS.LISTINGS);
       if (!raw) {
-        localStorage.setItem(STORAGE_KEYS.LISTINGS, JSON.stringify(DEFAULT_LISTINGS));
         return [...DEFAULT_LISTINGS];
       }
       try {
@@ -938,7 +925,11 @@
     }
 
     function saveListings() {
-      localStorage.setItem(STORAGE_KEYS.LISTINGS, JSON.stringify(state.listings));
+      try {
+        localStorage.setItem(STORAGE_KEYS.LISTINGS, JSON.stringify(state.listings));
+      } catch (e) {
+        console.warn("Almacenamiento local lleno, operando directo desde la nube.");
+      }
     }
 
     function saveFavs() {
@@ -954,12 +945,22 @@
       document.getElementById("favCount").textContent = state.favorites.length;
     }
 
+    function updateRateBadge() {
+      const badge = document.getElementById("rateBadge");
+      if (!badge) return;
+      const formatted = Number(state.rate || 0).toLocaleString("es-VE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      badge.textContent = `${state.rateSource}: Bs ${formatted}`;
+    }
+
     function showToast(msg) {
       const el = document.getElementById("toast");
       el.textContent = msg;
       el.classList.add("show");
       clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+      window._toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
     }
 
     function formatPrice(usd) {
@@ -1022,9 +1023,9 @@
       if (q) {
         list = list.filter(
           (item) =>
-            item.title.toLowerCase().includes(q) ||
-            item.desc.toLowerCase().includes(q) ||
-            item.category.toLowerCase().includes(q)
+            (item.title || "").toLowerCase().includes(q) ||
+            (item.desc || "").toLowerCase().includes(q) ||
+            (item.category || "").toLowerCase().includes(q)
         );
       }
       if (loc) {
@@ -1041,13 +1042,13 @@
       }
 
       if (sort === "featured") {
-        list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || b.createdAt - a.createdAt);
+        list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
       } else if (sort === "price_asc") {
         list.sort((a, b) => Number(a.priceUsd) - Number(b.priceUsd));
       } else if (sort === "price_desc") {
         list.sort((a, b) => Number(b.priceUsd) - Number(a.priceUsd));
       } else {
-        list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || b.createdAt - a.createdAt);
+        list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
       }
 
       return list;
@@ -1059,6 +1060,7 @@
       const info = document.getElementById("resultsInfo");
       const items = getFilteredListings();
 
+      updateRateBadge();
       info.textContent = `${items.length} ${items.length === 1 ? "publicación" : "publicaciones"}`;
       grid.innerHTML = "";
 
@@ -1163,17 +1165,46 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (ev) => {
-        state.uploadedPhotoData = ev.target.result;
-        const box = document.getElementById("pubPreviewBox");
-        const img = document.getElementById("pubPreviewImg");
-        img.src = state.uploadedPhotoData;
-        box.style.display = "block";
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxW = 720;
+          const scale = img.width > maxW ? maxW / img.width : 1;
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          state.uploadedPhotoData = canvas.toDataURL("image/jpeg", 0.72);
+          const box = document.getElementById("pubPreviewBox");
+          const prev = document.getElementById("pubPreviewImg");
+          prev.src = state.uploadedPhotoData;
+          box.style.display = "block";
+        };
+        img.src = ev.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    function submitListing(e) {
+    function normalizarTexto(txt) {
+      return String(txt || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function detectarInfraccion(title, desc) {
+      const texto = normalizarTexto(`${title} ${desc}`);
+      const encontrada = PALABRAS_PROHIBIDAS.find((p) => texto.includes(p));
+      if (encontrada) {
+        return `Término restringido detectado (${encontrada})`;
+      }
+      return "";
+    }
+
+    async function submitListing(e) {
       e.preventDefault();
+      if (state.isPublishing) return;
+
       const title = document.getElementById("pubTitle").value.trim();
       const category = document.getElementById("pubCategory").value;
       const condition = document.getElementById("pubCondition").value;
@@ -1183,17 +1214,26 @@
       const phone = document.getElementById("pubPhone").value.trim().replace(/\D/g, "");
       const desc = document.getElementById("pubDesc").value.trim();
 
+      if (!title || isNaN(priceUsd) || priceUsd <= 0) {
+        showToast("Completa un título y precio válido");
+        return;
+      }
+
+      const motivoRevision = detectarInfraccion(title, desc);
+      const tieneInfraccion = Boolean(motivoRevision);
+
       const newItem = {
         id: "item-" + Date.now(),
         title,
         category,
         condition,
-        priceUsd: isNaN(priceUsd) ? 0 : priceUsd,
+        priceUsd,
         location,
         seller,
         phone,
         featured: false,
-        paused: false,
+        paused: tieneInfraccion,
+        reviewReason: motivoRevision,
         createdAt: Date.now(),
         image: state.uploadedPhotoData || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=70",
         desc,
@@ -1201,12 +1241,40 @@
         chats: []
       };
 
-      state.listings.unshift(newItem);
-      saveListings();
-      e.target.reset();
-      closeModal("publishModal");
-      renderListings();
-      showToast("Artículo publicado");
+      const btn = document.getElementById("pubSubmitBtn");
+      state.isPublishing = true;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Publicando...";
+      }
+
+      try {
+        if (typeof window.guardarProductoFirestore === "function") {
+          const nubeId = await window.guardarProductoFirestore(newItem);
+          if (nubeId) newItem.id = nubeId;
+        }
+
+        state.listings.unshift(newItem);
+        saveListings();
+        renderListings();
+
+        if (!tieneInfraccion) {
+          showToast("¡Artículo publicado en Plaza Libre!");
+        } else {
+          showToast("Anuncio enviado a revisión por normas de Plaza Libre");
+        }
+
+        e.target.reset();
+        state.uploadedPhotoData = "";
+        document.getElementById("pubPreviewBox").style.display = "none";
+        closeModal("publishModal");
+      } finally {
+        state.isPublishing = false;
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Publicar ahora";
+        }
+      }
     }
 
     function openDetail(id) {
@@ -1261,13 +1329,13 @@
 
         <p style="margin-bottom:12px; color:#334155;">${escapeHtml(item.desc)}</p>
         <div style="font-size:0.88rem; color:var(--muted); margin-bottom:16px;">
-          <strong>Vendedor:</strong> ${escapeHtml(item.seller)} · <strong>Ubicación:</strong> ${escapeHtml(item.location)}
+          <strong>Vendedor:</strong> ${escapeHtml(item.seller || "Particular")} · <strong>Ubicación:</strong> ${escapeHtml(item.location)}
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
           ${
             waPhone
-              ? `<a class="btn btn-success" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu publicación en Plaza Libre: " + item.title)}">Contactar por WhatsApp</a>`
+              ? `<a class="btn btn-success" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu publicación en Plaza Libre: " + item.title + " ($" + item.priceUsd + ")")}">Contactar por WhatsApp</a>`
               : ""
           }
           <button class="btn btn-outline" onclick="reportItem('${item.id}')">Reportar publicación</button>
@@ -1301,6 +1369,9 @@
       item.questions = item.questions || [];
       item.questions.push({ ask: text, answer: "", at: new Date().toLocaleDateString() });
       saveListings();
+      if (typeof window.actualizarProductoFirestore === "function") {
+        window.actualizarProductoFirestore(id, { questions: item.questions });
+      }
       openDetail(id);
       showToast("Pregunta enviada");
     }
@@ -1315,6 +1386,9 @@
       item.chats = item.chats || [];
       item.chats.push({ sender: "Comprador", text, at: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) });
       saveListings();
+      if (typeof window.actualizarProductoFirestore === "function") {
+        window.actualizarProductoFirestore(id, { chats: item.chats });
+      }
       openDetail(id);
     }
 
@@ -1385,19 +1459,23 @@
           body.innerHTML = "<p>No hay publicaciones.</p>";
           return;
         }
-        body.innerHTML = state.listings
+        const ordenados = [...state.listings].sort((a, b) => (b.paused ? 1 : 0) - (a.paused ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
+        body.innerHTML = ordenados
           .map(
             (item) => `
-          <div class="admin-item">
+          <div class="admin-item ${item.paused ? "pending-review" : ""}">
             <div>
               <strong>${escapeHtml(item.title)}</strong>
               <div style="font-size:0.82rem; color:var(--muted);">
-                $${Number(item.priceUsd).toFixed(2)} · ${escapeHtml(item.category)} · ${item.paused ? "PAUSADA" : "ACTIVA"} ${item.featured ? "· DESTACADA" : ""}
+                $${Number(item.priceUsd).toFixed(2)} · ${escapeHtml(item.category)} ·
+                <strong style="color:${item.paused ? "#B45309" : "#047857"};">${item.paused ? "EN REVISIÓN / PAUSADA" : "ACTIVA"}</strong>
+                ${item.featured ? "· DESTACADA" : ""}
               </div>
+              ${item.reviewReason ? `<div style="font-size:0.78rem; color:#B45309; margin-top:2px;">Filtro: ${escapeHtml(item.reviewReason)}</div>` : ""}
             </div>
             <div class="admin-actions">
               <button class="btn btn-outline" onclick="adminToggleFeatured('${item.id}')">${item.featured ? "Quitar destacado" : "Destacar"}</button>
-              <button class="btn btn-outline" onclick="adminTogglePause('${item.id}')">${item.paused ? "Activar" : "Pausar"}</button>
+              <button class="btn ${item.paused ? "btn-success" : "btn-outline"}" onclick="adminTogglePause('${item.id}')">${item.paused ? "Aprobar / Activar" : "Pausar"}</button>
               <button class="btn btn-danger" onclick="adminDeleteItem('${item.id}')">Eliminar</button>
             </div>
           </div>`
@@ -1425,7 +1503,7 @@
         const savedCfg = localStorage.getItem(STORAGE_KEYS.FIREBASE_CFG) || "";
         body.innerHTML = `
           <div class="field">
-            <label>Tasa de cambio (Bs por $1 USD)</label>
+            <label>Tasa de cambio manual de respaldo (Bs por $1 USD)</label>
             <input id="rateInput" type="number" step="0.01" min="0.01" value="${state.rate}" />
           </div>
           <div class="field">
@@ -1437,29 +1515,40 @@
       }
     }
 
-    function adminToggleFeatured(id) {
+    async function adminToggleFeatured(id) {
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
       item.featured = !item.featured;
       saveListings();
       renderListings();
       renderAdminBody();
+      if (typeof window.actualizarProductoFirestore === "function") {
+        await window.actualizarProductoFirestore(id, { featured: item.featured });
+      }
     }
 
-    function adminTogglePause(id) {
+    async function adminTogglePause(id) {
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
       item.paused = !item.paused;
+      if (!item.paused) item.reviewReason = "";
       saveListings();
       renderListings();
       renderAdminBody();
+      if (typeof window.actualizarProductoFirestore === "function") {
+        await window.actualizarProductoFirestore(id, { paused: item.paused, reviewReason: item.reviewReason || "" });
+      }
+      showToast(item.paused ? "Publicación pausada" : "Publicación aprobada y activa");
     }
 
-    function adminDeleteItem(id) {
+    async function adminDeleteItem(id) {
       state.listings = state.listings.filter((x) => x.id !== id);
       saveListings();
       renderListings();
       renderAdminBody();
+      if (typeof window.eliminarProductoFirestore === "function") {
+        await window.eliminarProductoFirestore(id);
+      }
       showToast("Publicación eliminada");
     }
 
@@ -1473,6 +1562,7 @@
       const r = parseFloat(document.getElementById("rateInput").value);
       if (!isNaN(r) && r > 0) {
         state.rate = r;
+        state.rateSource = "Tasa";
         localStorage.setItem(STORAGE_KEYS.RATE, String(r));
       }
       const cfgText = document.getElementById("firebaseCfgInput").value.trim();
@@ -1485,60 +1575,127 @@
     updateFavCount();
     renderCategories();
     renderListings();
-</script>
+  </script>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      addDoc,
+      doc,
+      updateDoc,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBWiAHim-kh0o5yQT3W6RULY_BD1dqXVQ",
-    authDomain: "plaza-libre-c8e29.firebaseapp.com",
-    projectId: "plaza-libre-c8e29",
-    storageBucket: "plaza-libre-c8e29.firebasestorage.app",
-    messagingSenderId: "369114910443",
-    appId: "1:369114910443:web:caca7ddb3a6db767d3b8se",
-    measurementId: "G-V3PL10EJCE"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWiAHim-kh0o5yQT3W6RULY_BD1dqXVQ",
+      authDomain: "plaza-libre-c8e29.firebaseapp.com",
+      projectId: "plaza-libre-c8e29",
+      storageBucket: "plaza-libre-c8e29.firebasestorage.app",
+      messagingSenderId: "369114910443",
+      appId: "1:369114910443:web:caca7ddb3a6db767d3b8se",
+      measurementId: "G-V3PL10EJCE"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.dbPlazaLibre = db;
-  window.addDocPlazaLibre = addDoc;
-  window.collectionPlazaLibre = collection;
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  async function cargarProductosFirestore() {
-    try {
-      const querySnapshot = await getDocs(collection(db, "productos"));
-      const productosNube = [];
-      querySnapshot.forEach((doc) => {
-        const d = doc.data();
-        productosNube.push({
-          id: doc.id,
-          title: d.title || d.titulo || "Sin título",
-          priceUsd: Number(d.priceUsd ?? d.precio ?? 0),
-          category: d.category || d.categoria || "Todo",
-          condition: d.condition || d.condicion || "Nuevo",
-          location: d.location || d.ciudad || "Puerto Ordaz",
-          description: d.description || d.descripcion || "",
-          phone: d.phone || d.telefono || "",
-          image: d.image || d.imagen || "",
-          featured: Boolean(d.featured),
-          paused: Boolean(d.paused),
-          createdAt: d.createdAt || Date.now()
+    window.guardarProductoFirestore = async function(item) {
+      try {
+        const docRef = await addDoc(collection(db, "productos"), {
+          title: item.title || "",
+          priceUsd: Number(item.priceUsd || 0),
+          category: item.category || "Todo",
+          condition: item.condition || "Nuevo",
+          location: item.location || "Puerto Ordaz",
+          seller: item.seller || "Particular",
+          desc: item.desc || "",
+          phone: item.phone || "",
+          image: item.image || "",
+          featured: Boolean(item.featured),
+          paused: Boolean(item.paused),
+          reviewReason: item.reviewReason || "",
+          questions: item.questions || [],
+          chats: item.chats || [],
+          createdAt: item.createdAt || Date.now()
         });
-      });
-
-      if (productosNube.length > 0 && typeof state !== "undefined") {
-        state.listings = productosNube;
-        if (typeof renderListings === "function") renderListings();
+        return docRef.id;
+      } catch (error) {
+        console.error("Error guardando anuncio:", error);
+        return null;
       }
-    } catch (error) {
-      console.error("Error cargando productos:", error);
-    }
-  }
+    };
 
-  cargarProductosFirestore();
-</script>
+    window.actualizarProductoFirestore = async function(id, campos) {
+      try {
+        await updateDoc(doc(db, "productos", id), campos);
+      } catch (error) {
+        console.warn("No se pudo actualizar documento en la nube:", error);
+      }
+    };
+
+    window.eliminarProductoFirestore = async function(id) {
+      try {
+        await deleteDoc(doc(db, "productos", id));
+      } catch (error) {
+        console.warn("No se pudo eliminar documento en la nube:", error);
+      }
+    };
+
+    async function actualizarTasaBcvEnVivo() {
+      try {
+        const resp = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
+        const data = await resp.json();
+        if (data && data.promedio && typeof state !== "undefined") {
+          state.rate = Number(data.promedio);
+          state.rateSource = "BCV";
+          localStorage.setItem(STORAGE_KEYS.RATE, String(state.rate));
+          if (typeof renderListings === "function") renderListings();
+        }
+      } catch (e) {
+        console.warn("Usando tasa de respaldo:", e);
+      }
+    }
+
+    async function cargarProductosFirestore() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "productos"));
+        const productosNube = [];
+        querySnapshot.forEach((dSnap) => {
+          const d = dSnap.data();
+          productosNube.push({
+            id: dSnap.id,
+            title: d.title || d.titulo || "Sin título",
+            priceUsd: Number(d.priceUsd ?? d.precio ?? 0),
+            category: d.category || d.categoria || "Todo",
+            condition: d.condition || d.condicion || "Nuevo",
+            location: d.location || d.ciudad || "Puerto Ordaz",
+            seller: d.seller || d.vendedor || "Particular",
+            desc: d.desc || d.description || d.descripcion || "",
+            phone: d.phone || d.telefono || "",
+            image: d.image || d.imagen || "",
+            featured: Boolean(d.featured),
+            paused: Boolean(d.paused),
+            reviewReason: d.reviewReason || "",
+            questions: Array.isArray(d.questions) ? d.questions : [],
+            chats: Array.isArray(d.chats) ? d.chats : [],
+            createdAt: d.createdAt || Date.now()
+          });
+        });
+
+        if (productosNube.length > 0 && typeof state !== "undefined") {
+          state.listings = productosNube;
+          if (typeof renderListings === "function") renderListings();
+        }
+      } catch (error) {
+        console.error("Error cargando productos:", error);
+      }
+    }
+
+    await actualizarTasaBcvEnVivo();
+    await cargarProductosFirestore();
+  </script>
 </body>
 </html>
