@@ -1484,7 +1484,35 @@
     // Init
     updateFavCount();
     renderCategories();
-    renderListings();
+    renderLi// For Firebase JS SDK v7.20.0 and later, measurementId is optional
   </script>
-</body>
+renderListings();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBwTAHim-khOo5yQT3wW6RULY_RD1dQxVQ",
+    authDomain: "plaza-libre-c8e29.firebaseapp.com",
+    projectId: "plaza-libre-c8e29",
+    storageBucket: "plaza-libre-c8e29.firebasestorage.app",
+    messagingSenderId: "369114910443",
+    appId: "1:369114910443:web:caca7ddb3a6db767d3b8se",
+    measurementId: "G-V3PL10EJCE"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function cargarProductosFirestore() {
+    const querySnapshot = await getDocs(collection(db, "productos"));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, "=>", doc.data());
+    });
+  }
+
+  cargarProductosFirestore();
+</script>                                                                                                                            </body>
 </html>
