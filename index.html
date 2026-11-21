@@ -464,7 +464,7 @@
     .card-img-wrap {
       position: relative;
       aspect-ratio: 1 / 1;
-      background: #E2E8F0;
+      background: #F1F5F9;
       cursor: pointer;
       overflow: hidden;
     }
@@ -473,6 +473,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
       display: block;
     }
 
@@ -564,6 +565,16 @@
       line-height: 1.15;
     }
 
+    .price.price-consult {
+      color: #0F766E;
+      font-size: 0.98rem;
+    }
+
+    .price.price-free {
+      color: #059669;
+      font-size: 1rem;
+    }
+
     .price-alt {
       font-size: 0.75rem;
       color: var(--muted);
@@ -594,6 +605,16 @@
       text-overflow: ellipsis;
     }
 
+    .store-badge {
+      background: #E0E7FF;
+      color: #1E40AF;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
     .verified-tick {
       display: inline-flex;
       align-items: center;
@@ -614,6 +635,13 @@
       font-size: 0.7rem;
       margin-left: auto;
       flex-shrink: 0;
+    }
+
+    .rating-pill.is-new {
+      background: #ECFDF5;
+      color: #059669;
+      padding: 1px 5px;
+      border-radius: 4px;
     }
 
     .meta {
@@ -762,39 +790,88 @@
       cursor: pointer;
     }
 
-    .preview-grid {
+    .dual-photo-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-top: 8px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .preview-thumb {
-      aspect-ratio: 1 / 1;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      position: relative;
+    .photo-slot {
+      border: 1px dashed #CBD5E1;
+      border-radius: 10px;
+      padding: 10px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+      text-align: center;
     }
 
-    .preview-thumb img {
+    .photo-slot-preview {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: 115px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #E2E8F0;
     }
 
-    /* Detalle galería, seguridad y extras */
+    /* Detalle galería con vista completa sin recortes y flechas */
     .detail-gallery {
       margin-bottom: 12px;
+      position: relative;
+      background: #0F172A;
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .detail-img {
       width: 100%;
-      max-height: 330px;
-      object-fit: cover;
-      border-radius: 10px;
-      background: #E2E8F0;
+      max-height: 390px;
+      object-fit: contain;
       display: block;
+      margin: 0 auto;
+      background: #0F172A;
+    }
+
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      color: #0F172A;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+    }
+
+    .gallery-arrow.prev {
+      left: 10px;
+    }
+
+    .gallery-arrow.next {
+      right: 10px;
+    }
+
+    .gallery-counter {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      background: rgba(15, 23, 42, 0.78);
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
     }
 
     .thumb-strip {
@@ -805,9 +882,10 @@
     }
 
     .thumb-strip img {
-      width: 58px;
-      height: 58px;
-      object-fit: cover;
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      background: #E2E8F0;
       border-radius: 8px;
       border: 2px solid transparent;
       cursor: pointer;
@@ -828,6 +906,32 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 8px;
+    }
+
+    .star-vote-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 5px;
+    }
+
+    .star-vote-btn {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #F59E0B;
+      line-height: 1;
+      padding: 0 1px;
+      transition: transform 0.1s ease;
+    }
+
+    .star-vote-btn:hover {
+      transform: scale(1.25);
     }
 
     .safety-box {
@@ -1084,6 +1188,8 @@
     }
   </style>
 </head>
+<!-- FIN PARTE 1 DE 3 -->
+<!-- INICIO PARTE 2 DE 3 -->
 <body>
 
   <header>
@@ -1099,7 +1205,7 @@
 
       <div class="search-wrap">
         <form class="search-box" onsubmit="event.preventDefault(); applySearch();">
-          <input id="searchInput" type="search" autocomplete="off" placeholder="Buscar productos, vehículos, repuestos, servicios..." onfocus="showRecentSearches()" oninput="renderListings()" />
+          <input id="searchInput" type="search" autocomplete="off" placeholder="Buscar productos, tiendas, repuestos, ciudad..." onfocus="showRecentSearches()" oninput="renderListings()" />
           <button type="submit">Buscar</button>
         </form>
         <div id="recentSearchesBox" class="recent-searches"></div>
@@ -1136,6 +1242,11 @@
     <div class="filter-row">
       <div class="filter-group">
         <input id="locationFilter" type="text" placeholder="Ciudad o sector" style="width:140px" oninput="renderListings()" />
+        <select id="sellerTypeFilter" onchange="renderListings()">
+          <option value="">Vendedor: Todos</option>
+          <option value="Tienda / Negocio">Tienda / Negocio</option>
+          <option value="Particular">Particular</option>
+        </select>
         <select id="conditionFilter" onchange="renderListings()">
           <option value="">Condición: Todas</option>
           <option value="Nuevo">Nuevo</option>
@@ -1148,8 +1259,8 @@
           <option value="Delivery">Delivery</option>
           <option value="Envíos nacionales">Envíos nacionales</option>
         </select>
-        <input id="minPriceFilter" type="number" min="0" step="any" placeholder="Mín ($)" style="width:88px" oninput="renderListings()" />
-        <input id="maxPriceFilter" type="number" min="0" step="any" placeholder="Máx ($)" style="width:88px" oninput="renderListings()" />
+        <input id="minPriceFilter" type="number" min="0" step="any" placeholder="Mín ($)" style="width:82px" oninput="renderListings()" />
+        <input id="maxPriceFilter" type="number" min="0" step="any" placeholder="Máx ($)" style="width:82px" oninput="renderListings()" />
         <select id="sortFilter" onchange="renderListings()">
           <option value="recent">Más recientes</option>
           <option value="featured">Destacados primero</option>
@@ -1204,19 +1315,20 @@
       </div>
     </div>
   </footer>
-<!-- FIN PARTE 1 -->
-<!-- INICIO PARTE 2 -->
-  <!-- Modal Publicar -->
+
+  <!-- Modal Publicar / Editar Anuncio -->
   <div class="modal-backdrop" id="publishModal">
     <div class="modal">
       <div class="modal-header">
-        <h2>Publicar en Plaza Libre Venezuela</h2>
+        <h2 id="pubModalTitle">Publicar en Plaza Libre Venezuela</h2>
         <button class="close-btn" onclick="closeModal('publishModal')">&times;</button>
       </div>
       <form onsubmit="submitListing(event)">
+        <input type="hidden" id="editItemId" value="" />
+
         <div class="field">
           <label>Título de la publicación *</label>
-          <input id="pubTitle" type="text" maxlength="90" required placeholder="Ej. Moto Bera SBR 150 operativa o Laptop i5" />
+          <input id="pubTitle" type="text" maxlength="90" required placeholder="Ej. Moto Bera SBR 150 operativa o Repuestos en general" />
         </div>
 
         <div class="form-grid">
@@ -1227,28 +1339,46 @@
           <div class="field">
             <label>Condición *</label>
             <select id="pubCondition" required>
-              <option value="Usado">Usado</option>
-              <option value="Usado - Como nuevo">Usado - Como nuevo</option>
               <option value="Nuevo">Nuevo</option>
+              <option value="Usado - Como nuevo">Usado - Como nuevo</option>
+              <option value="Usado">Usado</option>
             </select>
           </div>
         </div>
 
         <div class="form-grid">
           <div class="field">
-            <label>Precio en USD ($) *</label>
-            <input id="pubPrice" type="number" min="0.01" step="0.01" required placeholder="Ej. 120" />
+            <label>Tipo de precio *</label>
+            <select id="pubPriceType" onchange="togglePriceInput()" required>
+              <option value="fixed">Precio fijo ($)</option>
+              <option value="consult">A consultar</option>
+              <option value="free">Gratis</option>
+            </select>
           </div>
-          <div class="field">
-            <label>Ubicación (Ciudad / Sector) *</label>
-            <input id="pubLocation" type="text" maxlength="60" required placeholder="Ej. Puerto Ordaz, Alta Vista" />
+          <div class="field" id="pubPriceWrap">
+            <label>Monto en USD ($) *</label>
+            <input id="pubPrice" type="number" min="0.01" step="0.01" required placeholder="Ej. 120" />
           </div>
         </div>
 
         <div class="form-grid">
           <div class="field">
+            <label>Tipo de vendedor *</label>
+            <select id="pubSellerType" required>
+              <option value="Particular">Particular</option>
+              <option value="Tienda / Negocio">Tienda / Negocio</option>
+            </select>
+          </div>
+          <div class="field">
             <label>Nombre del vendedor o tienda *</label>
-            <input id="pubSeller" type="text" maxlength="50" required placeholder="Tu nombre o tienda" />
+            <input id="pubSeller" type="text" maxlength="50" required placeholder="Tu nombre o nombre del local" />
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Ubicación (Ciudad / Sector) *</label>
+            <input id="pubLocation" type="text" maxlength="60" required placeholder="Ej. Puerto Ordaz, Alta Vista" />
           </div>
           <div class="field">
             <label>WhatsApp / Teléfono *</label>
@@ -1256,18 +1386,28 @@
           </div>
         </div>
 
-        <div class="form-grid">
-          <div class="field">
-            <label>PIN de 4 dígitos (para editar o marcar Vendido) *</label>
-            <input id="pubPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required placeholder="Ej. 1234" />
-          </div>
-          <div class="field">
-            <label>Fotos del producto (hasta 4 fotos)</label>
-            <input id="pubPhotoFile" type="file" accept="image/*" multiple onchange="handlePhotoUpload(event)" />
-          </div>
+        <div class="field">
+          <label>PIN de 4 dígitos (para editar o eliminar después) *</label>
+          <input id="pubPin" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required placeholder="Ej. 1234" />
         </div>
 
-        <div class="preview-grid" id="pubPreviewGrid" style="display:none; margin-bottom:10px;"></div>
+        <div class="field">
+          <label>Fotos del anuncio (hasta 2 fotos: Foto 1 portada, Foto 2 opcional)</label>
+          <div class="dual-photo-grid">
+            <div class="photo-slot">
+              <strong style="font-size:0.78rem;">Foto 1 (Portada)</strong>
+              <img id="slotPreview0" class="photo-slot-preview" style="display:none;" alt="Foto 1" />
+              <input id="pubPhotoFile0" type="file" accept="image/*" style="width:100%; font-size:0.76rem;" onchange="handleSlotPhoto(event, 0)" />
+              <button type="button" id="removePhotoBtn0" class="btn btn-outline" style="display:none; padding:3px 8px; font-size:0.72rem;" onclick="removeSlotPhoto(0)">Quitar foto 1</button>
+            </div>
+            <div class="photo-slot">
+              <strong style="font-size:0.78rem;">Foto 2 (Opcional)</strong>
+              <img id="slotPreview1" class="photo-slot-preview" style="display:none;" alt="Foto 2" />
+              <input id="pubPhotoFile1" type="file" accept="image/*" style="width:100%; font-size:0.76rem;" onchange="handleSlotPhoto(event, 1)" />
+              <button type="button" id="removePhotoBtn1" class="btn btn-outline" style="display:none; padding:3px 8px; font-size:0.72rem;" onclick="removeSlotPhoto(1)">Quitar foto 2</button>
+            </div>
+          </div>
+        </div>
 
         <div class="field">
           <label>Métodos de entrega disponibles</label>
@@ -1290,16 +1430,19 @@
 
         <div class="field">
           <label>Descripción *</label>
-          <textarea id="pubDesc" maxlength="800" required placeholder="Detalla estado, características, entrega o si aceptas cambios..."></textarea>
+          <textarea id="pubDesc" maxlength="800" required placeholder="Detalla estado, características, horario de atención o servicios..."></textarea>
         </div>
 
         <div style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;">
-          Al publicar aceptas las normas de Plaza Libre Venezuela. Guarda tu PIN de 4 dígitos para editar el precio, renovar o marcar como vendido.
+          Guarda tu PIN de 4 dígitos para editar cualquier dato, cambiar fotos o eliminar tu publicación cuando quieras.
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:10px;">
-          <button type="button" class="btn btn-outline" onclick="closeModal('publishModal')">Cancelar</button>
-          <button type="submit" id="pubSubmitBtn" class="btn btn-publish">Publicar ahora</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <button type="button" id="pubDeleteEditBtn" class="btn btn-danger" style="display:none;" onclick="deleteCurrentEditedAd()">Eliminar publicación</button>
+          <div style="display:flex; gap:10px; margin-left:auto;">
+            <button type="button" class="btn btn-outline" onclick="closeModal('publishModal')">Cancelar</button>
+            <button type="submit" id="pubSubmitBtn" class="btn btn-publish">Publicar ahora</button>
+          </div>
         </div>
       </form>
     </div>
@@ -1307,7 +1450,7 @@
 
   <!-- Modal Mis Anuncios (Gestión por WhatsApp + PIN sin registro) -->
   <div class="modal-backdrop" id="myAdsModal">
-    <div class="modal" style="max-width:560px;">
+    <div class="modal" style="max-width:580px;">
       <div class="modal-header">
         <h2>Gestionar Mis Anuncios</h2>
         <button class="close-btn" onclick="closeModal('myAdsModal')">&times;</button>
@@ -1362,7 +1505,7 @@
       <div class="admin-tabs">
         <button class="btn btn-primary" id="tabPubs" onclick="switchAdminTab('pubs')">Publicaciones</button>
         <button class="btn btn-outline" id="tabReports" onclick="switchAdminTab('reports')">Reportes (<span id="adminReportsCount">0</span>)</button>
-        <button class="btn btn-outline" id="tabSettings" onclick="switchAdminTab('settings')">Banner, APK, Tasa y Firebase</button>
+        <button class="btn btn-outline" id="tabSettings" onclick="switchAdminTab('settings')">Banner, APK, Tasa y Respaldo</button>
       </div>
 
       <div id="adminBody"></div>
@@ -1370,18 +1513,25 @@
   </div>
 
   <div class="toast" id="toast"></div>
-
+<!-- FIN PARTE 2 DE 3 -->
+<!-- INICIO PARTE 3A -->
   <script>
     const CATEGORIES = [
       "Todo",
-      "Vehículos",
-      "Motos y Repuestos",
-      "Tecnología",
-      "Hogar",
-      "Inmuebles",
-      "Ropa y Calzado",
+      "Carros y Camionetas",
+      "Motos",
+      "Repuestos y Accesorios",
+      "Inmuebles y Alquileres",
+      "Teléfonos y Tablets",
+      "Computación y Electrónica",
+      "Electrodomésticos y Línea Blanca",
+      "Hogar y Muebles",
+      "Moda, Ropa y Calzado",
+      "Venta de Garaje",
+      "Herramientas y Ferretería",
+      "Deportes y Bicicletas",
       "Servicios",
-      "Empleos"
+      "Empleos y Otros"
     ];
 
     const STORAGE_KEYS = {
@@ -1391,7 +1541,8 @@
       RATE: "plaza_libre_rate_v1",
       FIREBASE_CFG: "plaza_libre_firebase_cfg_v1",
       RECENT_SEARCHES: "plaza_libre_recent_searches_v1",
-      BANNER: "plaza_libre_banner_v1"
+      BANNER: "plaza_libre_banner_v1",
+      VOTED_ADS: "plaza_libre_voted_ads_v1"
     };
 
     const ADMIN_SECRET = "23456";
@@ -1408,18 +1559,22 @@
       {
         id: "item-1",
         title: "Laptop Lenovo ThinkPad Core i5 8GB RAM 256GB SSD",
-        category: "Tecnología",
+        category: "Computación y Electrónica",
         condition: "Usado",
+        priceType: "fixed",
         priceUsd: 240,
         location: "Puerto Ordaz",
+        sellerType: "Particular",
         seller: "Carlos Mendoza",
-        phone: "04148889900",
+        phone: "584148889900",
         pin: "1234",
         verified: true,
         featured: true,
         sold: false,
         paused: false,
         views: 18,
+        ratingSum: 0,
+        ratingCount: 0,
         delivery: ["Entrega personal", "Envíos nacionales"],
         payment: ["Efectivo $", "Pago Móvil", "Zinli / Binance"],
         reviewReason: "",
@@ -1447,6 +1602,7 @@
       favorites: JSON.parse(localStorage.getItem(STORAGE_KEYS.FAVS) || "[]"),
       reports: JSON.parse(localStorage.getItem(STORAGE_KEYS.REPORTS) || "[]"),
       recentSearches: JSON.parse(localStorage.getItem(STORAGE_KEYS.RECENT_SEARCHES) || "[]"),
+      votedAds: JSON.parse(localStorage.getItem(STORAGE_KEYS.VOTED_ADS) || "{}"),
       banner: JSON.parse(localStorage.getItem(STORAGE_KEYS.BANNER) || "null") || { ...DEFAULT_BANNER },
       rate: parseFloat(localStorage.getItem(STORAGE_KEYS.RATE) || "45"),
       rateSource: "Manual",
@@ -1454,7 +1610,9 @@
       category: "Todo",
       onlyFavs: false,
       sellerFilter: "",
-      uploadedPhotos: [],
+      photoSlots: [null, null],
+      currentGalleryImgs: [],
+      currentGalleryIdx: 0,
       secretClicks: 0,
       adminUnlocked: false,
       adminTab: "pubs",
@@ -1463,9 +1621,7 @@
 
     function loadListings() {
       const raw = localStorage.getItem(STORAGE_KEYS.LISTINGS);
-      if (!raw) {
-        return [...DEFAULT_LISTINGS];
-      }
+      if (!raw) return [...DEFAULT_LISTINGS];
       try {
         return JSON.parse(raw);
       } catch {
@@ -1500,6 +1656,21 @@
       if (el) el.textContent = state.reports.length;
     }
 
+    function normalizeWhatsappPhone(raw) {
+      let digits = String(raw || "").replace(/\D/g, "");
+      if (!digits) return "";
+      if (digits.startsWith("0058")) digits = "58" + digits.slice(4);
+      else if (digits.startsWith("0") && digits.length === 11) digits = "58" + digits.slice(1);
+      else if (digits.length === 10 && digits.startsWith("4")) digits = "58" + digits;
+      return digits;
+    }
+
+    function phonesMatch(p1, p2) {
+      const a = normalizeWhatsappPhone(p1);
+      const b = normalizeWhatsappPhone(p2);
+      return Boolean(a && b && a === b);
+    }
+
     function updateRateBadge() {
       const badge = document.getElementById("rateBadge");
       if (!badge) return;
@@ -1529,7 +1700,7 @@
       if (state.banner.apkUrl && state.banner.apkUrl.trim()) {
         window.open(state.banner.apkUrl.trim(), "_blank", "noopener");
       } else {
-        showToast("En iPhone o Android: toca el menú del navegador y elige 'Agregar a pantalla de inicio'");
+        showToast("En Android o iPhone: toca el menú del navegador y elige 'Agregar a pantalla de inicio'");
       }
     }
 
@@ -1560,30 +1731,56 @@
     }
 
     function getSellerStats(item) {
-      const key = (item.phone || item.seller || "").trim().toLowerCase();
+      const key = normalizeWhatsappPhone(item.phone) || (item.seller || "").trim().toLowerCase();
       const sellerAds = state.listings.filter(
-        (x) => !x.paused && ((x.phone || x.seller || "").trim().toLowerCase() === key)
+        (x) => !x.paused && ((normalizeWhatsappPhone(x.phone) || (x.seller || "").trim().toLowerCase()) === key)
       );
       const totalAds = sellerAds.length || 1;
       const soldCount = sellerAds.filter((x) => x.sold).length;
-      const rating = item.verified
-        ? Math.min(5.0, 4.8 + Math.min(0.2, soldCount * 0.05)).toFixed(1)
-        : Math.min(4.9, 4.5 + Math.min(0.4, totalAds * 0.08)).toFixed(1);
-      return { totalAds, soldCount, rating };
+
+      const rCount = Number(item.ratingCount || 0);
+      const rSum = Number(item.ratingSum || 0);
+      if (rCount > 0) {
+        const avg = Math.min(5.0, Math.max(1.0, rSum / rCount)).toFixed(1);
+        return { totalAds, soldCount, label: `★ ${avg}`, isNew: false, votes: rCount };
+      }
+
+      const pool = ["4.3", "4.5", "4.7", "4.8", "4.9", "5.0", "Nuevo"];
+      const seedStr = String(item.id || item.title || "0");
+      let hash = 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        hash = (hash * 31 + seedStr.charCodeAt(i)) >>> 0;
+      }
+      const chosen = pool[hash % pool.length];
+      if (chosen === "Nuevo") {
+        return { totalAds, soldCount, label: "Nuevo", isNew: true, votes: 0 };
+      }
+      return { totalAds, soldCount, label: `★ ${chosen}`, isNew: false, votes: 0 };
     }
 
-    function formatPrice(usd) {
-      const amount = Number(usd) || 0;
+    function formatItemPrice(item) {
+      const pType = item.priceType || (Number(item.priceUsd) <= 0 ? "consult" : "fixed");
+      if (pType === "consult") {
+        return { main: "A consultar", sub: "", cssClass: "price-consult", shareLabel: "A consultar" };
+      }
+      if (pType === "free") {
+        return { main: "Gratis", sub: "", cssClass: "price-free", shareLabel: "Gratis" };
+      }
+      const amount = Number(item.priceUsd) || 0;
       if (state.currency === "VES") {
         const ves = amount * state.rate;
         return {
           main: `Bs ${ves.toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-          sub: `$ ${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          sub: `$ ${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          cssClass: "",
+          shareLabel: `$${amount.toFixed(2)}`
         };
       }
       return {
         main: `$ ${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        sub: `Bs ${(amount * state.rate).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+        sub: `Bs ${(amount * state.rate).toLocaleString("es-VE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        cssClass: "",
+        shareLabel: `$${amount.toFixed(2)}`
       };
     }
 
@@ -1656,8 +1853,9 @@
     }
 
     function getFilteredListings() {
-      const q = document.getElementById("searchInput").value.trim().toLowerCase();
-      const loc = document.getElementById("locationFilter").value.trim().toLowerCase();
+      const q = normalizarTexto(document.getElementById("searchInput").value.trim());
+      const loc = normalizarTexto(document.getElementById("locationFilter").value.trim());
+      const sType = document.getElementById("sellerTypeFilter").value;
       const cond = document.getElementById("conditionFilter").value;
       const deliv = document.getElementById("deliveryFilter").value;
       const minP = parseFloat(document.getElementById("minPriceFilter").value);
@@ -1667,7 +1865,7 @@
       let list = state.listings.filter((item) => !item.paused);
 
       if (state.sellerFilter) {
-        list = list.filter((item) => (item.phone || item.seller) === state.sellerFilter);
+        list = list.filter((item) => (normalizeWhatsappPhone(item.phone) || item.seller) === state.sellerFilter);
       }
       if (state.onlyFavs) {
         list = list.filter((item) => state.favorites.includes(item.id));
@@ -1675,17 +1873,21 @@
       if (state.category !== "Todo") {
         list = list.filter((item) => item.category === state.category);
       }
+      if (sType) {
+        list = list.filter((item) => (item.sellerType || "Particular") === sType);
+      }
       if (q) {
         list = list.filter(
           (item) =>
-            (item.title || "").toLowerCase().includes(q) ||
-            (item.desc || "").toLowerCase().includes(q) ||
-            (item.category || "").toLowerCase().includes(q) ||
-            (item.seller || "").toLowerCase().includes(q)
+            normalizarTexto(item.title).includes(q) ||
+            normalizarTexto(item.desc).includes(q) ||
+            normalizarTexto(item.category).includes(q) ||
+            normalizarTexto(item.seller).includes(q) ||
+            normalizarTexto(item.location).includes(q)
         );
       }
       if (loc) {
-        list = list.filter((item) => (item.location || "").toLowerCase().includes(loc));
+        list = list.filter((item) => normalizarTexto(item.location).includes(loc));
       }
       if (cond) {
         list = list.filter((item) => item.condition === cond);
@@ -1694,18 +1896,26 @@
         list = list.filter((item) => Array.isArray(item.delivery) && item.delivery.includes(deliv));
       }
       if (!isNaN(minP)) {
-        list = list.filter((item) => Number(item.priceUsd) >= minP);
+        list = list.filter((item) => (item.priceType || "fixed") === "fixed" && Number(item.priceUsd) >= minP);
       }
       if (!isNaN(maxP)) {
-        list = list.filter((item) => Number(item.priceUsd) <= maxP);
+        list = list.filter((item) => (item.priceType || "fixed") === "fixed" && Number(item.priceUsd) <= maxP);
       }
 
       if (sort === "featured") {
         list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
       } else if (sort === "price_asc") {
-        list.sort((a, b) => Number(a.priceUsd) - Number(b.priceUsd));
+        list.sort((a, b) => {
+          const pa = (a.priceType || "fixed") === "fixed" ? Number(a.priceUsd) : Number.MAX_SAFE_INTEGER;
+          const pb = (b.priceType || "fixed") === "fixed" ? Number(b.priceUsd) : Number.MAX_SAFE_INTEGER;
+          return pa - pb;
+        });
       } else if (sort === "price_desc") {
-        list.sort((a, b) => Number(b.priceUsd) - Number(a.priceUsd));
+        list.sort((a, b) => {
+          const pa = (a.priceType || "fixed") === "fixed" ? Number(a.priceUsd) : -1;
+          const pb = (b.priceType || "fixed") === "fixed" ? Number(b.priceUsd) : -1;
+          return pb - pa;
+        });
       } else if (sort === "views") {
         list.sort((a, b) => Number(b.views || 0) - Number(a.views || 0));
       } else {
@@ -1734,11 +1944,12 @@
       empty.style.display = "none";
 
       items.forEach((item) => {
-        const p = formatPrice(item.priceUsd);
+        const p = formatItemPrice(item);
         const isFav = state.favorites.includes(item.id);
         const stats = getSellerStats(item);
         const fallbackImg = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=70";
         const imgs = Array.isArray(item.images) && item.images.length ? item.images : [item.image || fallbackImg];
+        const isStore = (item.sellerType || "Particular") === "Tienda / Negocio";
 
         const card = document.createElement("article");
         card.className = "card" + (item.featured ? " is-featured" : "");
@@ -1754,13 +1965,14 @@
             </button>
           </div>
           <div class="card-body">
-            <div class="price">${p.main}</div>
-            <div class="price-alt">${p.sub}</div>
+            <div class="price ${p.cssClass}">${p.main}</div>
+            ${p.sub ? `<div class="price-alt">${p.sub}</div>` : ""}
             <div class="title" onclick="openDetail('${item.id}')">${escapeHtml(item.title)}</div>
             <div class="seller-mini">
+              ${isStore ? '<span class="store-badge">TIENDA</span>' : ""}
               <span>${escapeHtml(item.seller || "Particular")}</span>
               ${item.verified ? '<span class="verified-tick" title="Vendedor Verificado">✓</span>' : ""}
-              <span class="rating-pill">★ ${stats.rating}</span>
+              <span class="rating-pill ${stats.isNew ? "is-new" : ""}">${stats.label}</span>
             </div>
             <div class="meta">
               <span class="meta-loc">📍 ${escapeHtml(item.location || "")}</span>
@@ -1814,6 +2026,7 @@
     function clearFilters() {
       document.getElementById("searchInput").value = "";
       document.getElementById("locationFilter").value = "";
+      document.getElementById("sellerTypeFilter").value = "";
       document.getElementById("conditionFilter").value = "";
       document.getElementById("deliveryFilter").value = "";
       document.getElementById("minPriceFilter").value = "";
@@ -1872,14 +2085,96 @@
       } catch {}
     }
 
-    function openPublishModal() {
-      state.uploadedPhotos = [];
-      const prevGrid = document.getElementById("pubPreviewGrid");
-      prevGrid.innerHTML = "";
-      prevGrid.style.display = "none";
-      document.getElementById("publishModal").classList.add("open");
+    function togglePriceInput() {
+      const pType = document.getElementById("pubPriceType").value;
+      const wrap = document.getElementById("pubPriceWrap");
+      const input = document.getElementById("pubPrice");
+      if (pType === "fixed") {
+        wrap.style.display = "flex";
+        input.required = true;
+      } else {
+        wrap.style.display = "none";
+        input.required = false;
+        input.value = "";
+      }
     }
 
+    function syncSlotPreviews() {
+      [0, 1].forEach((idx) => {
+        const imgEl = document.getElementById("slotPreview" + idx);
+        const btnEl = document.getElementById("removePhotoBtn" + idx);
+        const fileEl = document.getElementById("pubPhotoFile" + idx);
+        if (state.photoSlots[idx]) {
+          imgEl.src = state.photoSlots[idx];
+          imgEl.style.display = "block";
+          btnEl.style.display = "inline-flex";
+        } else {
+          imgEl.src = "";
+          imgEl.style.display = "none";
+          btnEl.style.display = "none";
+          if (fileEl) fileEl.value = "";
+        }
+      });
+    }
+
+    function removeSlotPhoto(idx) {
+      state.photoSlots[idx] = null;
+      syncSlotPreviews();
+    }
+
+    function openPublishModal(editItem = null) {
+      const form = document.querySelector("#publishModal form");
+      if (form) form.reset();
+
+      if (editItem) {
+        document.getElementById("editItemId").value = editItem.id;
+        document.getElementById("pubModalTitle").textContent = "Editar publicación";
+        document.getElementById("pubSubmitBtn").textContent = "Guardar cambios";
+        document.getElementById("pubDeleteEditBtn").style.display = "inline-flex";
+
+        document.getElementById("pubTitle").value = editItem.title || "";
+        document.getElementById("pubCategory").value = CATEGORIES.includes(editItem.category) ? editItem.category : CATEGORIES[1];
+        document.getElementById("pubCondition").value = editItem.condition || "Usado";
+
+        const pType = editItem.priceType || (Number(editItem.priceUsd) <= 0 ? "consult" : "fixed");
+        document.getElementById("pubPriceType").value = pType;
+        togglePriceInput();
+        if (pType === "fixed") {
+          document.getElementById("pubPrice").value = editItem.priceUsd || "";
+        }
+
+        document.getElementById("pubSellerType").value = editItem.sellerType || "Particular";
+        document.getElementById("pubSeller").value = editItem.seller || "";
+        document.getElementById("pubLocation").value = editItem.location || "";
+        document.getElementById("pubPhone").value = editItem.phone || "";
+        document.getElementById("pubPin").value = editItem.pin || "";
+        document.getElementById("pubDesc").value = editItem.desc || "";
+
+        const imgs = Array.isArray(editItem.images) && editItem.images.length ? editItem.images : (editItem.image ? [editItem.image] : []);
+        state.photoSlots = [imgs[0] || null, imgs[1] || null];
+        syncSlotPreviews();
+
+        document.querySelectorAll('input[name="pubDelivery"]').forEach((cb) => {
+          cb.checked = Array.isArray(editItem.delivery) && editItem.delivery.includes(cb.value);
+        });
+        document.querySelectorAll('input[name="pubPayment"]').forEach((cb) => {
+          cb.checked = Array.isArray(editItem.payment) && editItem.payment.includes(cb.value);
+        });
+      } else {
+        document.getElementById("editItemId").value = "";
+        document.getElementById("pubModalTitle").textContent = "Publicar en Plaza Libre Venezuela";
+        document.getElementById("pubSubmitBtn").textContent = "Publicar ahora";
+        document.getElementById("pubDeleteEditBtn").style.display = "none";
+        document.getElementById("pubPriceType").value = "fixed";
+        togglePriceInput();
+        state.photoSlots = [null, null];
+        syncSlotPreviews();
+      }
+
+      document.getElementById("publishModal").classList.add("open");
+    }
+<!-- FIN PARTE 3A -->
+<!-- INICIO PARTE 3B -->
     function closeModal(id) {
       document.getElementById(id).classList.remove("open");
       if (id === "detailModal") {
@@ -1894,13 +2189,13 @@
           const img = new Image();
           img.onload = () => {
             const canvas = document.createElement("canvas");
-            const maxW = 640;
+            const maxW = 760;
             const scale = img.width > maxW ? maxW / img.width : 1;
             canvas.width = Math.round(img.width * scale);
             canvas.height = Math.round(img.height * scale);
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL("image/jpeg", 0.65));
+            resolve(canvas.toDataURL("image/jpeg", 0.72));
           };
           img.src = ev.target.result;
         };
@@ -1908,19 +2203,12 @@
       });
     }
 
-    async function handlePhotoUpload(e) {
-      const files = Array.from(e.target.files || []).slice(0, 4);
-      if (!files.length) return;
-      state.uploadedPhotos = [];
-      for (const f of files) {
-        const dataUrl = await compressSingleImage(f);
-        state.uploadedPhotos.push(dataUrl);
-      }
-      const prevGrid = document.getElementById("pubPreviewGrid");
-      prevGrid.innerHTML = state.uploadedPhotos
-        .map((src) => `<div class="preview-thumb"><img src="${src}" alt="Vista previa" /></div>`)
-        .join("");
-      prevGrid.style.display = "grid";
+    async function handleSlotPhoto(e, slotIdx) {
+      const file = (e.target.files || [])[0];
+      if (!file) return;
+      const dataUrl = await compressSingleImage(file);
+      state.photoSlots[slotIdx] = dataUrl;
+      syncSlotPreviews();
     }
 
     function normalizarTexto(txt) {
@@ -1943,24 +2231,35 @@
       e.preventDefault();
       if (state.isPublishing) return;
 
+      const editId = document.getElementById("editItemId").value.trim();
       const title = document.getElementById("pubTitle").value.trim();
       const category = document.getElementById("pubCategory").value;
       const condition = document.getElementById("pubCondition").value;
-      const priceUsd = parseFloat(document.getElementById("pubPrice").value);
-      const location = document.getElementById("pubLocation").value.trim();
+      const priceType = document.getElementById("pubPriceType").value;
+      const rawPrice = parseFloat(document.getElementById("pubPrice").value);
+      const priceUsd = priceType === "fixed" ? rawPrice : 0;
+      const sellerType = document.getElementById("pubSellerType").value;
       const seller = document.getElementById("pubSeller").value.trim();
-      const phone = document.getElementById("pubPhone").value.trim().replace(/\D/g, "");
+      const location = document.getElementById("pubLocation").value.trim();
+      const phone = normalizeWhatsappPhone(document.getElementById("pubPhone").value);
       const pin = document.getElementById("pubPin").value.trim();
       const desc = document.getElementById("pubDesc").value.trim();
 
       const delivery = Array.from(document.querySelectorAll('input[name="pubDelivery"]:checked')).map((el) => el.value);
       const payment = Array.from(document.querySelectorAll('input[name="pubPayment"]:checked')).map((el) => el.value);
 
-      if (!title || isNaN(priceUsd) || priceUsd <= 0) {
-        showToast("Completa un título y precio válido");
+      if (!title) {
+        showToast("Escribe un título para tu anuncio");
         return;
       }
-
+      if (priceType === "fixed" && (isNaN(priceUsd) || priceUsd <= 0)) {
+        showToast("Ingresa un monto en dólares válido");
+        return;
+      }
+      if (!phone || phone.length < 10) {
+        showToast("Ingresa un número de WhatsApp válido");
+        return;
+      }
       if (!/^\d{4}$/.test(pin)) {
         showToast("El PIN debe tener exactamente 4 números");
         return;
@@ -1969,42 +2268,84 @@
       const motivoRevision = detectarInfraccion(title, desc);
       const tieneInfraccion = Boolean(motivoRevision);
       const fallbackImg = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=70";
-      const imgs = state.uploadedPhotos.length ? [...state.uploadedPhotos] : [fallbackImg];
-
-      const newItem = {
-        id: "item-" + Date.now(),
-        title,
-        category,
-        condition,
-        priceUsd,
-        location,
-        seller,
-        phone,
-        pin,
-        verified: false,
-        featured: false,
-        sold: false,
-        paused: tieneInfraccion,
-        views: 1,
-        delivery,
-        payment,
-        reviewReason: motivoRevision,
-        createdAt: Date.now(),
-        image: imgs[0],
-        images: imgs,
-        desc,
-        questions: [],
-        chats: []
-      };
+      const validSlots = state.photoSlots.filter(Boolean);
+      const imgs = validSlots.length ? validSlots : [fallbackImg];
 
       const btn = document.getElementById("pubSubmitBtn");
       state.isPublishing = true;
       if (btn) {
         btn.disabled = true;
-        btn.textContent = "Publicando...";
+        btn.textContent = editId ? "Guardando..." : "Publicando...";
       }
 
       try {
+        if (editId) {
+          const existing = state.listings.find((x) => x.id === editId);
+          if (!existing) return;
+
+          const updatedFields = {
+            title,
+            category,
+            condition,
+            priceType,
+            priceUsd,
+            sellerType,
+            seller,
+            location,
+            phone,
+            pin,
+            delivery,
+            payment,
+            desc,
+            image: imgs[0],
+            images: imgs,
+            paused: tieneInfraccion ? true : existing.paused,
+            reviewReason: motivoRevision
+          };
+
+          Object.assign(existing, updatedFields);
+          saveListings();
+          renderListings();
+
+          if (typeof window.actualizarProductoFirestore === "function") {
+            await window.actualizarProductoFirestore(editId, updatedFields);
+          }
+
+          showToast("¡Cambios guardados correctamente!");
+          closeModal("publishModal");
+          return;
+        }
+
+        const newItem = {
+          id: "item-" + Date.now(),
+          title,
+          category,
+          condition,
+          priceType,
+          priceUsd,
+          sellerType,
+          location,
+          seller,
+          phone,
+          pin,
+          verified: false,
+          featured: false,
+          sold: false,
+          paused: tieneInfraccion,
+          views: 1,
+          ratingSum: 0,
+          ratingCount: 0,
+          delivery,
+          payment,
+          reviewReason: motivoRevision,
+          createdAt: Date.now(),
+          image: imgs[0],
+          images: imgs,
+          desc,
+          questions: [],
+          chats: []
+        };
+
         if (typeof window.guardarProductoFirestore === "function") {
           const nubeId = await window.guardarProductoFirestore(newItem);
           if (nubeId) newItem.id = nubeId;
@@ -2015,22 +2356,65 @@
         renderListings();
 
         if (!tieneInfraccion) {
-          showToast("¡Artículo publicado en Plaza Libre Venezuela!");
+          showToast("¡Publicado en Plaza Libre Venezuela!");
         } else {
           showToast("Anuncio enviado a revisión por normas de Plaza Libre Venezuela");
         }
 
         e.target.reset();
-        state.uploadedPhotos = [];
-        document.getElementById("pubPreviewGrid").style.display = "none";
+        state.photoSlots = [null, null];
+        syncSlotPreviews();
         closeModal("publishModal");
       } finally {
         state.isPublishing = false;
         if (btn) {
           btn.disabled = false;
-          btn.textContent = "Publicar ahora";
+          btn.textContent = editId ? "Guardar cambios" : "Publicar ahora";
         }
       }
+    }
+
+    async function deleteCurrentEditedAd() {
+      const editId = document.getElementById("editItemId").value.trim();
+      if (!editId) return;
+      if (!confirm("¿Seguro que deseas eliminar esta publicación definitivamente?")) return;
+
+      state.listings = state.listings.filter((x) => x.id !== editId);
+      saveListings();
+      renderListings();
+      closeModal("publishModal");
+
+      if (typeof window.eliminarProductoFirestore === "function") {
+        await window.eliminarProductoFirestore(editId);
+      }
+      showToast("Publicación eliminada");
+    }
+
+    async function voteSellerRating(itemId, stars) {
+      if (state.votedAds[itemId]) {
+        showToast("Ya calificaste este anuncio desde este teléfono");
+        return;
+      }
+      const item = state.listings.find((x) => x.id === itemId);
+      if (!item) return;
+
+      const score = Math.min(5, Math.max(1, Number(stars)));
+      item.ratingSum = Number(item.ratingSum || 0) + score;
+      item.ratingCount = Number(item.ratingCount || 0) + 1;
+
+      state.votedAds[itemId] = score;
+      localStorage.setItem(STORAGE_KEYS.VOTED_ADS, JSON.stringify(state.votedAds));
+
+      saveListings();
+      renderListings();
+      if (typeof window.actualizarProductoFirestore === "function") {
+        await window.actualizarProductoFirestore(itemId, {
+          ratingSum: item.ratingSum,
+          ratingCount: item.ratingCount
+        });
+      }
+      openDetail(itemId);
+      showToast(`¡Gracias por tu calificación de ${score} ★!`);
     }
 
     function openDetail(id) {
@@ -2045,18 +2429,26 @@
         window.actualizarProductoFirestore(id, { views: item.views });
       }
 
-      const p = formatPrice(item.priceUsd);
+      const p = formatItemPrice(item);
       const stats = getSellerStats(item);
-      const cleanPhone = (item.phone || "").replace(/\D/g, "");
-      const waPhone = cleanPhone.startsWith("0") && cleanPhone.length === 11 ? "58" + cleanPhone.slice(1) : cleanPhone;
+      const waPhone = normalizeWhatsappPhone(item.phone);
       const imgs = Array.isArray(item.images) && item.images.length ? item.images : [item.image];
+      state.currentGalleryImgs = imgs;
+      state.currentGalleryIdx = 0;
+
+      const galleryControlsHtml =
+        imgs.length > 1
+          ? `<button type="button" class="gallery-arrow prev" onclick="stepDetailGallery(-1)" aria-label="Foto anterior">‹</button>
+             <button type="button" class="gallery-arrow next" onclick="stepDetailGallery(1)" aria-label="Siguiente foto">›</button>
+             <span id="detailGalleryCounter" class="gallery-counter">1 / ${imgs.length}</span>`
+          : "";
 
       const thumbsHtml =
         imgs.length > 1
           ? `<div class="thumb-strip">${imgs
               .map(
                 (src, idx) =>
-                  `<img src="${src}" class="${idx === 0 ? "active" : ""}" onclick="switchDetailImg(this, '${src}')" alt="Foto ${idx + 1}" />`
+                  `<img src="${src}" class="${idx === 0 ? "active" : ""}" onclick="setDetailGalleryIndex(${idx})" alt="Foto ${idx + 1}" />`
               )
               .join("")}</div>`
           : "";
@@ -2103,21 +2495,36 @@
         ? `<h3 style="font-size:0.96rem; margin:16px 0 6px;">Publicaciones similares</h3>
            <div class="similar-grid">
              ${similares
-               .map(
-                 (s) => `
+               .map((s) => {
+                 const sp = formatItemPrice(s);
+                 return `
                <div class="similar-card" onclick="openDetail('${s.id}')">
                  <img src="${(s.images && s.images[0]) || s.image}" alt="${escapeHtml(s.title)}" />
                  <div style="overflow:hidden;">
-                   <div style="font-weight:800; font-size:0.82rem; color:var(--primary);">$${Number(s.priceUsd).toFixed(2)}</div>
+                   <div style="font-weight:800; font-size:0.82rem; color:var(--primary);">${sp.main}</div>
                    <div style="font-size:0.76rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(s.title)}</div>
                  </div>
-               </div>`
-               )
+               </div>`;
+               })
                .join("")}
            </div>`
         : "";
 
-      const sellerKey = item.phone || item.seller;
+      const sellerKey = waPhone || item.seller;
+      const isStore = (item.sellerType || "Particular") === "Tienda / Negocio";
+      const alreadyVoted = state.votedAds[item.id];
+
+      const voteStarsHtml = alreadyVoted
+        ? `<span style="font-size:0.74rem; color:#059669; font-weight:700;">✓ Calificado (${alreadyVoted} ★)</span>`
+        : `<div class="star-vote-bar" title="Toca para calificar al vendedor">
+             <span style="font-size:0.72rem; color:#92400E; font-weight:700; margin-right:3px;">Calificar:</span>
+             ${[1, 2, 3, 4, 5].map((n) => `<button type="button" class="star-vote-btn" onclick="voteSellerRating('${item.id}', ${n})">★</button>`).join("")}
+           </div>`;
+
+      const waGreeting =
+        (item.priceType || "fixed") === "fixed"
+          ? `Hola, vi tu publicación en Plaza Libre Venezuela: ${item.title} ($${item.priceUsd})`
+          : `Hola, vi tu publicación en Plaza Libre Venezuela: ${item.title}`;
 
       document.getElementById("detailModalContent").innerHTML = `
         <div class="modal-header">
@@ -2127,13 +2534,14 @@
 
         <div class="detail-gallery">
           <img id="detailMainImg" class="detail-img" src="${imgs[0]}" alt="${escapeHtml(item.title)}" />
-          ${thumbsHtml}
+          ${galleryControlsHtml}
         </div>
+        ${thumbsHtml}
 
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin:12px 0 10px;">
           <div>
-            <div class="price" style="font-size:1.45rem;">${p.main}</div>
-            <div class="price-alt">${p.sub}</div>
+            <div class="price ${p.cssClass}" style="font-size:1.45rem;">${p.main}</div>
+            ${p.sub ? `<div class="price-alt">${p.sub}</div>` : ""}
           </div>
           <div style="text-align:right;">
             <span class="condition-tag">${escapeHtml(item.condition)} · ${escapeHtml(item.category)}</span>
@@ -2147,28 +2555,30 @@
 
         <div class="seller-box">
           <div>
-            <div style="font-size:0.9rem; font-weight:700; display:flex; align-items:center; gap:5px;">
+            <div style="font-size:0.9rem; font-weight:700; display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+              ${isStore ? '<span class="store-badge">TIENDA / NEGOCIO</span>' : ""}
               <span>${escapeHtml(item.seller || "Particular")}</span>
               ${item.verified ? '<span class="verified-tick" title="Vendedor Verificado">✓</span>' : ""}
-              <span style="color:#B45309; font-size:0.8rem;">★ ${stats.rating}</span>
+              <span style="color:#B45309; font-size:0.8rem;">${stats.label}${stats.votes > 0 ? ` (${stats.votes})` : ""}</span>
             </div>
             <div style="font-size:0.78rem; color:var(--muted);">
               📍 ${escapeHtml(item.location)} · ${stats.totalAds} ${stats.totalAds === 1 ? "publicación" : "publicaciones"}${stats.soldCount > 0 ? ` · ${stats.soldCount} vendidas` : ""}
             </div>
+            ${voteStarsHtml}
           </div>
           <button class="btn btn-outline" style="padding:5px 10px; font-size:0.78rem;" onclick="filterBySeller('${escapeHtml(sellerKey)}')">Ver perfil</button>
         </div>
 
         <div class="safety-box">
-          🛡️ <strong>Compra segura:</strong> Revisa bien el artículo antes de pagar, acuerda entregas personales en lugares públicos y evita enviar adelantos a cuentas de terceros.
+          🛡️ <strong>Compra segura:</strong> Revisa bien el artículo antes de pagar, acuerda entregas personales en lugares públicos y nunca envíes dinero por adelantado sin verificar.
         </div>
 
         ${
           waPhone && !item.sold
             ? `<div class="quick-wa-row">
                 <a class="quick-wa-chip" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu anuncio en Plaza Libre Venezuela (" + item.title + "). ¿Sigue disponible?")}">¿Sigue disponible?</a>
-                <a class="quick-wa-chip" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu anuncio en Plaza Libre Venezuela (" + item.title + "). ¿Cuál es el precio mínimo?")}">¿Precio mínimo?</a>
-                <a class="quick-wa-chip" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu anuncio en Plaza Libre Venezuela (" + item.title + "). ¿Aceptas cambio?")}">¿Aceptas cambio?</a>
+                <a class="quick-wa-chip" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu anuncio en Plaza Libre Venezuela (" + item.title + "). ¿Cuál es el precio o información?")}">¿Precio / info?</a>
+                <a class="quick-wa-chip" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu anuncio en Plaza Libre Venezuela (" + item.title + "). ¿Dónde están ubicados?")}">¿Ubicación exacta?</a>
               </div>`
             : ""
         }
@@ -2176,11 +2586,11 @@
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;">
           ${
             waPhone
-              ? `<a class="btn btn-success" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent("Hola, vi tu publicación en Plaza Libre Venezuela: " + item.title + " ($" + item.priceUsd + ")")}">Contactar por WhatsApp</a>`
+              ? `<a class="btn btn-success" target="_blank" rel="noopener" href="https://wa.me/${waPhone}?text=${encodeURIComponent(waGreeting)}">Contactar por WhatsApp</a>`
               : ""
           }
-          <button class="btn btn-outline" onclick="shareItem('${item.id}')">Compartir enlace directo</button>
-          <button class="btn btn-outline" onclick="manageSingleAdWithPin('${item.id}')">Gestionar (PIN)</button>
+          <button class="btn btn-outline" onclick="shareItem('${item.id}')">Compartir por WhatsApp</button>
+          <button class="btn btn-outline" onclick="editSingleAdWithPin('${item.id}')">Editar / Eliminar (PIN)</button>
           <button class="btn btn-outline" onclick="reportItem('${item.id}')">Reportar</button>
         </div>
 
@@ -2204,10 +2614,22 @@
       document.getElementById("detailModal").classList.add("open");
     }
 
-    function switchDetailImg(el, src) {
-      document.getElementById("detailMainImg").src = src;
-      document.querySelectorAll(".thumb-strip img").forEach((img) => img.classList.remove("active"));
-      el.classList.add("active");
+    function setDetailGalleryIndex(idx) {
+      if (!state.currentGalleryImgs.length) return;
+      state.currentGalleryIdx = (idx + state.currentGalleryImgs.length) % state.currentGalleryImgs.length;
+      const mainImg = document.getElementById("detailMainImg");
+      if (mainImg) mainImg.src = state.currentGalleryImgs[state.currentGalleryIdx];
+
+      const counter = document.getElementById("detailGalleryCounter");
+      if (counter) counter.textContent = `${state.currentGalleryIdx + 1} / ${state.currentGalleryImgs.length}`;
+
+      document.querySelectorAll(".thumb-strip img").forEach((img, i) => {
+        img.classList.toggle("active", i === state.currentGalleryIdx);
+      });
+    }
+
+    function stepDetailGallery(delta) {
+      setDetailGalleryIndex(state.currentGalleryIdx + delta);
     }
 
     function getDirectItemUrl(id) {
@@ -2218,8 +2640,9 @@
     function shareItem(id) {
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
+      const p = formatItemPrice(item);
       const directUrl = getDirectItemUrl(id);
-      const shareText = `Mira esto en Plaza Libre Venezuela: ${item.title} — $${Number(item.priceUsd).toFixed(2)} (${item.location}) ${directUrl}`;
+      const shareText = `Mira esto en Plaza Libre Venezuela: ${item.title} (${p.shareLabel} — ${item.location}) ${directUrl}`;
       if (navigator.share) {
         navigator.share({ title: item.title, text: shareText, url: directUrl }).catch(() => {});
       } else {
@@ -2247,20 +2670,17 @@
       showToast("Respuesta publicada");
     }
 
-    function manageSingleAdWithPin(id) {
+    function editSingleAdWithPin(id) {
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
-      const pin = prompt("Ingresa el PIN de 4 dígitos de esta publicación:");
+      const pin = prompt("Ingresa el PIN de 4 dígitos con el que publicaste este anuncio:");
       if (!pin) return;
-      if (item.pin && pin !== item.pin && pin !== ADMIN_SECRET) {
-        showToast("PIN incorrecto");
+      if (!item.pin || (pin !== item.pin && pin !== ADMIN_SECRET)) {
+        showToast("PIN incorrecto para este anuncio");
         return;
       }
       closeModal("detailModal");
-      document.getElementById("myAdsPhone").value = item.phone || "";
-      document.getElementById("myAdsPin").value = pin;
-      document.getElementById("myAdsModal").classList.add("open");
-      renderMyAdsList([item]);
+      openPublishModal(item);
     }
 
     function openMyAdsModal() {
@@ -2270,9 +2690,9 @@
 
     function searchMyAds(e) {
       e.preventDefault();
-      const phone = document.getElementById("myAdsPhone").value.trim().replace(/\D/g, "");
+      const phone = document.getElementById("myAdsPhone").value.trim();
       const pin = document.getElementById("myAdsPin").value.trim();
-      const matches = state.listings.filter((x) => (x.phone || "").replace(/\D/g, "") === phone && x.pin === pin);
+      const matches = state.listings.filter((x) => phonesMatch(x.phone, phone) && x.pin === pin);
       renderMyAdsList(matches);
     }
 
@@ -2283,40 +2703,32 @@
         return;
       }
       box.innerHTML = matches
-        .map(
-          (item) => `
+        .map((item) => {
+          const p = formatItemPrice(item);
+          return `
         <div class="admin-item">
           <div>
             <strong>${escapeHtml(item.title)}</strong>
             <div style="font-size:0.82rem; color:var(--muted);">
-              Precio actual: $${Number(item.priceUsd).toFixed(2)} · ${item.sold ? "<strong style='color:var(--danger)'>VENDIDO</strong>" : "Disponible"}
+              Precio: ${p.main} · ${item.sold ? "<strong style='color:var(--danger)'>VENDIDO</strong>" : "Disponible"}
             </div>
           </div>
           <div class="admin-actions">
-            <button class="btn btn-outline" onclick="sellerEditPrice('${item.id}')">Cambiar precio</button>
+            <button class="btn btn-primary" onclick="openEditFromMyAds('${item.id}')">Editar todo / Fotos</button>
             <button class="btn btn-outline" onclick="sellerRenewAd('${item.id}')">Subir / Renovar</button>
             <button class="btn ${item.sold ? "btn-success" : "btn-publish"}" onclick="sellerToggleSold('${item.id}')">${item.sold ? "Marcar Disponible" : "Marcar Vendido"}</button>
             <button class="btn btn-danger" onclick="sellerDeleteAd('${item.id}')">Eliminar</button>
           </div>
-        </div>`
-        )
+        </div>`;
+        })
         .join("");
     }
 
-    async function sellerEditPrice(id) {
+    function openEditFromMyAds(id) {
       const item = state.listings.find((x) => x.id === id);
       if (!item) return;
-      const val = prompt("Nuevo precio en USD ($):", item.priceUsd);
-      const num = parseFloat(val);
-      if (isNaN(num) || num <= 0) return;
-      item.priceUsd = num;
-      saveListings();
-      renderListings();
-      renderMyAdsList([item]);
-      if (typeof window.actualizarProductoFirestore === "function") {
-        await window.actualizarProductoFirestore(id, { priceUsd: num });
-      }
-      showToast("Precio actualizado");
+      closeModal("myAdsModal");
+      openPublishModal(item);
     }
 
     async function sellerRenewAd(id) {
@@ -2456,6 +2868,20 @@
       renderAdminBody();
     }
 
+    function exportListingsBackup() {
+      const dataStr = JSON.stringify(state.listings, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `respaldo-plaza-libre-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Respaldo JSON descargado");
+    }
+
     function renderAdminBody() {
       const body = document.getElementById("adminBody");
 
@@ -2466,13 +2892,14 @@
         }
         const ordenados = [...state.listings].sort((a, b) => (b.paused ? 1 : 0) - (a.paused ? 1 : 0) || (b.createdAt || 0) - (a.createdAt || 0));
         body.innerHTML = ordenados
-          .map(
-            (item) => `
+          .map((item) => {
+            const p = formatItemPrice(item);
+            return `
           <div class="admin-item ${item.paused ? "pending-review" : ""}">
             <div>
               <strong>${escapeHtml(item.title)}</strong>
               <div style="font-size:0.82rem; color:var(--muted);">
-                $${Number(item.priceUsd).toFixed(2)} · ${escapeHtml(item.category)} · ${escapeHtml(item.seller || "")} (${escapeHtml(item.phone || "Sin tlf")}) ·
+                ${p.main} · ${escapeHtml(item.category)} · ${escapeHtml(item.seller || "")} (${escapeHtml(item.phone || "Sin tlf")}) · PIN: <strong>${escapeHtml(item.pin || "N/A")}</strong> ·
                 <strong style="color:${item.paused ? "#B45309" : "#047857"};">${item.paused ? "EN REVISIÓN / PAUSADA" : "ACTIVA"}</strong>
                 ${item.featured ? "· DESTACADA" : ""}
                 ${item.verified ? "· VERIFICADO" : ""}
@@ -2480,13 +2907,14 @@
               ${item.reviewReason ? `<div style="font-size:0.78rem; color:#B45309; margin-top:2px;">Filtro: ${escapeHtml(item.reviewReason)}</div>` : ""}
             </div>
             <div class="admin-actions">
+              <button class="btn btn-outline" onclick="adminEditItem('${item.id}')">Editar</button>
               <button class="btn btn-outline" onclick="adminToggleFeatured('${item.id}')">${item.featured ? "Quitar destacado" : "Destacar"}</button>
               <button class="btn btn-outline" onclick="adminToggleVerified('${item.id}')">${item.verified ? "Quitar ✓" : "Verificar ✓"}</button>
               <button class="btn ${item.paused ? "btn-success" : "btn-outline"}" onclick="adminTogglePause('${item.id}')">${item.paused ? "Aprobar / Activar" : "Pausar"}</button>
               <button class="btn btn-danger" onclick="adminDeleteItem('${item.id}')">Eliminar</button>
             </div>
-          </div>`
-          )
+          </div>`;
+          })
           .join("");
       } else if (state.adminTab === "reports") {
         if (state.reports.length === 0) {
@@ -2542,9 +2970,19 @@
             <label>Configuración Firebase (JSON)</label>
             <textarea id="firebaseCfgInput" placeholder='{"apiKey":"...","projectId":"..."}'>${escapeHtml(savedCfg)}</textarea>
           </div>
-          <button class="btn btn-primary" onclick="saveAdminSettings()">Guardar configuración en la nube</button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="saveAdminSettings()">Guardar configuración en la nube</button>
+            <button class="btn btn-outline" onclick="exportListingsBackup()">⬇ Descargar respaldo JSON (${state.listings.length} anuncios)</button>
+          </div>
         `;
       }
+    }
+
+    function adminEditItem(id) {
+      const item = state.listings.find((x) => x.id === id);
+      if (!item) return;
+      closeModal("adminModal");
+      openPublishModal(item);
     }
 
     async function adminToggleFeatured(id) {
@@ -2587,6 +3025,7 @@
     }
 
     async function adminDeleteItem(id) {
+      if (!confirm("¿Eliminar esta publicación?")) return;
       state.listings = state.listings.filter((x) => x.id !== id);
       saveListings();
       renderListings();
@@ -2673,10 +3112,12 @@
       try {
         const docRef = await addDoc(collection(db, "productos"), {
           title: item.title || "",
+          priceType: item.priceType || "fixed",
           priceUsd: Number(item.priceUsd || 0),
           category: item.category || "Todo",
           condition: item.condition || "Nuevo",
           location: item.location || "Puerto Ordaz",
+          sellerType: item.sellerType || "Particular",
           seller: item.seller || "Particular",
           desc: item.desc || "",
           phone: item.phone || "",
@@ -2684,6 +3125,8 @@
           verified: Boolean(item.verified),
           sold: Boolean(item.sold),
           views: Number(item.views || 1),
+          ratingSum: Number(item.ratingSum || 0),
+          ratingCount: Number(item.ratingCount || 0),
           delivery: Array.isArray(item.delivery) ? item.delivery : [],
           payment: Array.isArray(item.payment) ? item.payment : [],
           image: item.image || "",
@@ -2796,13 +3239,16 @@
           const d = dSnap.data();
           const mainImg = d.image || d.imagen || "";
           const imgsArr = Array.isArray(d.images) && d.images.length ? d.images : (mainImg ? [mainImg] : []);
+          const numPrice = Number(d.priceUsd ?? d.precio ?? 0);
           productosNube.push({
             id: dSnap.id,
             title: d.title || d.titulo || "Sin título",
-            priceUsd: Number(d.priceUsd ?? d.precio ?? 0),
+            priceType: d.priceType || (numPrice <= 0 ? "consult" : "fixed"),
+            priceUsd: numPrice,
             category: d.category || d.categoria || "Todo",
             condition: d.condition || d.condicion || "Nuevo",
             location: d.location || d.ciudad || "Puerto Ordaz",
+            sellerType: d.sellerType || "Particular",
             seller: d.seller || d.vendedor || "Particular",
             desc: d.desc || d.description || d.descripcion || "",
             phone: d.phone || d.telefono || "",
@@ -2810,6 +3256,8 @@
             verified: Boolean(d.verified),
             sold: Boolean(d.sold),
             views: Number(d.views || 0),
+            ratingSum: Number(d.ratingSum || 0),
+            ratingCount: Number(d.ratingCount || 0),
             delivery: Array.isArray(d.delivery) ? d.delivery : [],
             payment: Array.isArray(d.payment) ? d.payment : [],
             image: mainImg,
