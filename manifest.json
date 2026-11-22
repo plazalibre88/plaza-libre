@@ -1,9 +1,9 @@
 {
-  "name": "Plaza Libre",
-  "short_name": "Plaza Libre",
+  "name": "Plaza Libre venezuela",
+  "short_name": "Plaza Libre ve",
   "description": "Compra y venta directa en Venezuela",
-  "start_url": "/plaza-libre/",
-  "scope": "/plaza-libre/",
+  "start_url": "/plaza-libre-venezuela/",
+  "scope": "/plaza-libre-venezuela/",
   "display": "standalone",
   "background_color": "#1E40AF",
   "theme_color": "#1E40AF",
